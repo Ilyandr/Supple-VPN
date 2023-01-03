@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <style name="Theme.SplashScreenApp" parent="android:Theme.Material.NoActionBar.TranslucentDecor" />
+
+    <style name="SplashScreenTheme" parent="Theme.SplashScreenApp">
+        <item name="android:windowBackground">@drawable/splash_inset_legacy</item>
+    </style>
+
+</resources>
