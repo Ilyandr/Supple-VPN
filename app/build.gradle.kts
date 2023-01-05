@@ -34,6 +34,10 @@ android {
     }
     kotlinOptions {
         jvmTarget = "11"
+        freeCompilerArgs = freeCompilerArgs + listOf(
+            "-P",
+            "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
+        )
     }
     buildFeatures {
         compose = true
@@ -56,6 +60,7 @@ dependencies {
     // Core
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
+    implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation("androidx.activity:activity-compose:1.6.1")
     platform("androidx.compose:compose-bom:2022.12.00")
 
@@ -67,6 +72,8 @@ dependencies {
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-graphics:$composeVersion")
     implementation("androidx.compose.material3:material3:1.0.1")
+    implementation("androidx.compose.material:material:1.3.1")
+    implementation("com.github.SimformSolutionsPvtLtd:SSJetPackComposeProgressButton:1.0.7")
 
     // navigation
     implementation("androidx.navigation:navigation-compose:$navigationVersion")

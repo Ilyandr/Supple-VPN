@@ -4,7 +4,7 @@ import android.os.Build
 import androidx.activity.ComponentActivity
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.lifecycleScope
-import gcu.product.supplevpn.repository.unitAction
+import gcu.product.supplevpn.repository.features.utils.unitAction
 import kotlinx.coroutines.delay
 
 
