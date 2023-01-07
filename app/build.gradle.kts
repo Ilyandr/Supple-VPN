@@ -22,6 +22,7 @@ android {
         vectorDrawables {
             useSupportLibrary = true
         }
+        buildConfigField("String", "VPN_GATE_API", "\"http://www.vpngate.net/api/iphone/\"")
     }
     buildTypes {
         getByName("release") {
@@ -41,6 +42,7 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
     composeOptions {
         kotlinCompilerExtensionVersion = "1.3.2"
@@ -58,11 +60,13 @@ dependencies {
     val navigationVersion = "2.6.0-alpha04"
 
     // Core
+    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
+    implementation(project(":libVpn"))
+    platform("androidx.compose:compose-bom:2022.12.00")
     implementation("androidx.core:core-ktx:1.9.0")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation("androidx.activity:activity-compose:1.6.1")
-    platform("androidx.compose:compose-bom:2022.12.00")
 
     // UI
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.13-rc")
@@ -75,7 +79,7 @@ dependencies {
     implementation("androidx.compose.material:material:1.3.1")
     implementation("com.github.SimformSolutionsPvtLtd:SSJetPackComposeProgressButton:1.0.7")
 
-    // navigation
+    // Navigation
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
 
     // Test
@@ -88,6 +92,13 @@ dependencies {
 
     //  DI
     kapt("com.google.dagger:hilt-android-compiler:2.44")
-    kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
     implementation("com.google.dagger:hilt-android:2.44")
+
+    // Rest
+    platform("com.google.firebase:firebase-bom:31.1.1")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
+    implementation("com.squareup.retrofit2:retrofit:2.9.0")
+    implementation("com.onesignal:OneSignal:4.7.0")
+    implementation("com.google.firebase:firebase-analytics:21.2.0")
+    implementation("com.google.firebase:firebase-crashlytics:18.3.2")
 }

@@ -17,6 +17,9 @@ buildscript {
         classpath("org.jetbrains.kotlin:kotlin-gradle-plugin:1.7.20")
         classpath("com.android.tools.build:gradle:8.0.0-alpha11")
         classpath("com.google.dagger:hilt-android-gradle-plugin:2.44")
+        classpath("gradle.plugin.com.onesignal:onesignal-gradle-plugin:0.14.0")
+        classpath("com.google.gms:google-services:4.3.14")
+        classpath("com.google.firebase:firebase-crashlytics-gradle:2.9.2")
     }
 }
 
