@@ -11,7 +11,9 @@
           <set>
             <option value="$PROJECT_DIR$" />
             <option value="$PROJECT_DIR$/app" />
-            <option value="$PROJECT_DIR$/libVpn" />
+            <option value="$PROJECT_DIR$/base" />
+            <option value="$PROJECT_DIR$/gateway" />
+            <option value="$PROJECT_DIR$/usecase" />
           </set>
         </option>
       </GradleProjectSettings>

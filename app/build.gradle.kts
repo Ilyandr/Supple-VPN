@@ -56,30 +56,40 @@ android {
 
 dependencies {
 
-    val composeVersion = "1.3.2"
-    val navigationVersion = "2.6.0-alpha04"
+    // Modules
+    implementation(project(":gateway"))
+    implementation(project(":usecase"))
+    implementation(project(":base"))
 
     // Core
+    val composeBomVersion = "2022.12.00"
+    val kotlinCoreVersion = "1.9.0"
     kapt("org.jetbrains.kotlinx:kotlinx-metadata-jvm:0.5.0")
-    implementation(project(":libVpn"))
-    platform("androidx.compose:compose-bom:2022.12.00")
-    implementation("androidx.core:core-ktx:1.9.0")
+    platform("androidx.compose:compose-bom:$composeBomVersion")
+    implementation("androidx.core:core-ktx:$kotlinCoreVersion")
     implementation("androidx.lifecycle:lifecycle-runtime-ktx:2.5.1")
     implementation("androidx.hilt:hilt-navigation-compose:1.0.0")
     implementation("androidx.activity:activity-compose:1.6.1")
 
     // UI
+    val composeVersion = "1.3.2"
+    val materialVersion = "1.3.1"
+    val material3Version = "1.0.1"
+    val splashVersion = "1.0.0"
+    val coilVersion = "2.2.2"
+    implementation("io.coil-kt:coil-compose:$coilVersion")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.13-rc")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
-    implementation("androidx.core:core-splashscreen:1.0.0")
+    implementation("androidx.core:core-splashscreen:$splashVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")
     implementation("androidx.compose.ui:ui:$composeVersion")
     implementation("androidx.compose.ui:ui-graphics:$composeVersion")
-    implementation("androidx.compose.material3:material3:1.0.1")
-    implementation("androidx.compose.material:material:1.3.1")
+    implementation("androidx.compose.material3:material3:$material3Version")
+    implementation("androidx.compose.material:material:$materialVersion")
     implementation("com.github.SimformSolutionsPvtLtd:SSJetPackComposeProgressButton:1.0.7")
 
     // Navigation
+    val navigationVersion = "2.6.0-alpha04"
     implementation("androidx.navigation:navigation-compose:$navigationVersion")
 
     // Test
@@ -91,14 +101,30 @@ dependencies {
     debugImplementation("androidx.compose.ui:ui-test-manifest:$composeVersion")
 
     //  DI
-    kapt("com.google.dagger:hilt-android-compiler:2.44")
-    implementation("com.google.dagger:hilt-android:2.44")
+    val hiltVersion = "2.44"
+    kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
+    implementation("com.google.dagger:hilt-android:$hiltVersion")
 
-    // Rest
-    platform("com.google.firebase:firebase-bom:31.1.1")
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.2")
-    implementation("com.squareup.retrofit2:retrofit:2.9.0")
-    implementation("com.onesignal:OneSignal:4.7.0")
+    // Firebase
+    val firebaseBomVersion = "31.1.1"
+    val oneSignalVersion = "4.7.0"
+    platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
     implementation("com.google.firebase:firebase-analytics:21.2.0")
     implementation("com.google.firebase:firebase-crashlytics:18.3.2")
+    implementation("com.onesignal:OneSignal:$oneSignalVersion")
+
+    // Rest
+    val okHttpVersion = "5.0.0-alpha.2"
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
+    implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
+    implementation("com.squareup.retrofit2:adapter-rxjava3:$retrofitVersion")
+
+    // RxJava
+    val rxJavaVersion = "3.1.5"
+    val rxAndroidVersion = "3.0.2"
+    implementation("io.reactivex.rxjava3:rxjava:$rxJavaVersion")
+    implementation("io.reactivex.rxjava3:rxandroid:$rxAndroidVersion")
+
 }
