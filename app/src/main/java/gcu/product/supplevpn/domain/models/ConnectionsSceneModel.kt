@@ -1,14 +1,13 @@
 package gcu.product.supplevpn.domain.models
 
 import androidx.annotation.StringRes
-import gcu.product.base.models.proxy.ProxyDefaultEntity
-import gcu.product.base.models.proxy.ProxyPremiumEntity
+import gcu.product.base.models.proxy.ProxyEntity
 
 internal sealed class ConnectionsSceneModel {
 
     object DefaultState : ConnectionsSceneModel()
-    object LoadingState : ConnectionsSceneModel()
+    data class LoadingState(val isLoading: Boolean) : ConnectionsSceneModel()
+    object InitState : ConnectionsSceneModel()
     data class FaultState(@StringRes val error: Int) : ConnectionsSceneModel()
-    data class DefaultProxyListState(val list: List<ProxyDefaultEntity>) : ConnectionsSceneModel()
-    data class PremiumProxyListState(val list: List<ProxyPremiumEntity>) : ConnectionsSceneModel()
+    data class ProxyListState(val list: List<ProxyEntity>) : ConnectionsSceneModel()
 }

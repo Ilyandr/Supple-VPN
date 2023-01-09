@@ -12,19 +12,11 @@ import java.util.concurrent.TimeoutException
 internal abstract class FlowableViewModel<T> : ViewModel(), InteractionViewModel<T> {
 
     @SuppressLint("CheckResult")
-    override fun <T : Any> Single<T>.regularRequest(successAction: (T) -> Unit) {
+    override fun <T : Any> Single<T>.simpleRequest(successAction: (T) -> Unit) {
         subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .doOnSubscribe { /*loadingAction(true)*/ }
-            .doFinally { /*loadingAction(false)*/ }
             .subscribe({ successAction.invoke(it) }, { error -> faultAction(error) })
     }
-
-    override fun <T : Any> Single<T>.simpleRequest(successAction: (T) -> Unit) =
-        subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ successAction.invoke(it) }, { error -> faultAction(error) })
-            .dispose()
 
     override fun handleError(error: Throwable) = when (error) {
         is TimeoutException -> R.string.message_timeout_exception

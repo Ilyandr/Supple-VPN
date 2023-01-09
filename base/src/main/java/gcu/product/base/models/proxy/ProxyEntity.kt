@@ -2,10 +2,10 @@ package gcu.product.base.models.proxy
 
 import androidx.annotation.Keep
 import com.google.gson.annotations.SerializedName
-import java.util.Locale
 
 @Keep
-data class ProxyDefaultEntity(
+data class ProxyEntity(
+    val type: ProxyTypeModel,
     @SerializedName("name")
     val address: String,
     @SerializedName("country")

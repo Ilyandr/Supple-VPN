@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
@@ -35,9 +34,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.navigation.NavController
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.rememberNavController
 import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSButtonState
 import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSButtonType
 import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSCustomLoadingEffect
@@ -46,13 +43,13 @@ import com.simform.ssjetpackcomposeprogressbuttonlibrary.utils.six
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.domain.models.HomeSceneModel
 import gcu.product.supplevpn.domain.viewModels.HomeSceneViewModel
-import gcu.product.supplevpn.presentation.navigation.SetupPrimaryNavGraph
 import gcu.product.supplevpn.presentation.views.items.ApplicationItem
 import gcu.product.supplevpn.presentation.views.items.InfoConnectionView
 import gcu.product.supplevpn.repository.entities.ApplicationEntity
 import gcu.product.supplevpn.repository.features.utils.Constants
 import gcu.product.supplevpn.repository.features.utils.requireImage
 
+//Development now
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneViewModel = hiltViewModel()) {
@@ -149,9 +146,7 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
         ) {
             if (!loadingState.value) {
                 LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(top = 8.dp)
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) { items(appList.value) { ApplicationItem(item = it) } }
             }
         }

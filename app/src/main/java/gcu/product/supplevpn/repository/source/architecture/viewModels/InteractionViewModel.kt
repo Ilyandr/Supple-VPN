@@ -10,7 +10,6 @@ internal interface InteractionViewModel<StateDataType> {
 
     fun handleError(error: Throwable): Int
     fun faultAction(error: Throwable) {}
-    fun loadingAction(isLoading: Boolean) {}
-    infix fun <T : Any> Single<T>.regularRequest(successAction: (T) -> Unit)
+    fun setLoadingAction(isLoading: Boolean) {}
     infix fun <T : Any> Single<T>.simpleRequest(successAction: (T) -> Unit)
 }

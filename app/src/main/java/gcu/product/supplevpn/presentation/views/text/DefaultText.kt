@@ -1,8 +1,5 @@
 package gcu.product.supplevpn.presentation.views.text
 
-import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -12,7 +9,6 @@ import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
-import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import gcu.product.supplevpn.R
 
@@ -31,15 +27,15 @@ internal fun DefaultText(
 )
 
 @Composable
-internal fun DefaultText(@StringRes text: Int) = Text(
+internal fun HeavyText(
+    text: Int, modifier: Modifier = Modifier, fontSize: TextUnit = 20.sp, textAlign: TextAlign = TextAlign.Center
+) = Text(
     text = stringResource(id = text),
-    textAlign = TextAlign.Center,
-    fontStyle = FontStyle(R.font.sf_medium),
-    fontSize = 23.sp,
+    modifier = modifier,
+    textAlign = textAlign,
+    fontStyle = FontStyle(R.font.sf_heavy),
+    fontSize = fontSize,
     color = colorResource(id = R.color.white),
-    modifier = Modifier
-        .padding(top = 6.dp)
-        .fillMaxWidth(),
     maxLines = 1,
     overflow = TextOverflow.Ellipsis
 )

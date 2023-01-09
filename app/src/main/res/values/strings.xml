@@ -5,7 +5,10 @@
     <string name="admob_app_id">ca-app-pub-3940256099942544~3347511713</string>
     <string name="admob_interstitial_id">ca-app-pub-3940256099942544/1033173712</string>
     <string name="admob_banner_id">ca-app-pub-3940256099942544/6300978111</string>
+
+    <!--network errors-->
     <string name="message_timeout_exception">На данный момент сервер недоступен</string>
     <string name="message_network_exception">Ошибка соеденения с сервером - проверьте ваше подключение</string>
     <string name="message_unknown_exception">Неизвестная ошибка</string>
+    <string name="description_connection_list">Список серверов</string>
 </resources>

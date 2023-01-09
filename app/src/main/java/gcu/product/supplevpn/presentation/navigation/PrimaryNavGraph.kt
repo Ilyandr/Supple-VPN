@@ -18,6 +18,6 @@ internal enum class PrimaryNavGraph(val route: String) {
 internal fun SetupPrimaryNavGraph(navController: NavHostController) {
     NavHost(navController = navController, startDestination = PrimaryNavGraph.Home.route) {
         composable(route = PrimaryNavGraph.Home.route) { HomeScene(navController) }
-        composable(route = PrimaryNavGraph.Connections.route) { ConnectionsScene() }
+        composable(route = PrimaryNavGraph.Connections.route) { ConnectionsScene(navController) }
     }
 }

@@ -1,6 +1,7 @@
 package gcu.product.base.models.proxy
 
 import com.google.gson.annotations.SerializedName
+import java.util.Locale
 
 data class ProxyPremiumEntity(
     @SerializedName("id")
@@ -33,5 +34,15 @@ data class ProxyPremiumEntity(
     val descr: Int,
     @SerializedName("active")
     val active: Int
-)
+) {
+    fun mapToDefaultProxyEntity() = ProxyEntity(
+        type = ProxyTypeModel.Premium(user, pass),
+        address = host,
+        country = country.uppercase(Locale.getDefault()),
+        connectionType = type.uppercase(Locale.getDefault()),
+        speedMs = -1,
+        dateChecked = date,
+        addressType = version.toInt()
+    )
+}
 

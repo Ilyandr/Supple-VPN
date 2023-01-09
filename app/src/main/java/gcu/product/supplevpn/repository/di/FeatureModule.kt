@@ -28,7 +28,7 @@ internal class FeatureModule {
     fun provideImageFlagsRequestBuilder(@ApplicationContext context: Context): ImageRequest.Builder =
         ImageRequest.Builder(context)
             .crossfade(false)
-            .transformations(RoundedCornersTransformation(16f))
+            .transformations(RoundedCornersTransformation(32f))
             .diskCachePolicy(CachePolicy.ENABLED)
             .memoryCachePolicy(CachePolicy.ENABLED)
 }

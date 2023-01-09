@@ -37,7 +37,10 @@ internal class HomeSceneViewModel @Inject constructor(
 
     private fun requireListApplications() =
         viewModelScope.launch(Dispatchers.Main) {
-            mutableStateFlow set HomeSceneModel.InitPageState((packageManager requireApplicationList userPreferences))
+            mutableStateFlow set HomeSceneModel.InitPageState(
+                (packageManager requireApplicationList userPreferences).toMutableList().apply {
+                    removeAll { it == null || it.name.isNullOrEmpty() }
+                })
         }
 
     override fun actionReady() = mutableStateFlow set HomeSceneModel.DefaultState

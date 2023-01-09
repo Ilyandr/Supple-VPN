@@ -1,14 +1,16 @@
 package gcu.product.gateway.mappers
 
-import gcu.product.base.models.proxy.ProxyDefaultEntity
+import gcu.product.base.models.proxy.ProxyEntity
 import gcu.product.base.models.proxy.ProxyPremiumEntity
+import gcu.product.base.models.proxy.ProxyTypeModel
 
-fun String.mapDefaultProxyEntitiesList(): List<ProxyDefaultEntity> {
+fun String.mapDefaultProxyEntitiesList(): List<ProxyEntity> {
     var mutableString = this
-    return mutableListOf<ProxyDefaultEntity>().apply {
+    return mutableListOf<ProxyEntity>().apply {
         while (mutableString.contains("name")) {
             add(
-                ProxyDefaultEntity(
+                ProxyEntity(
+                    type = ProxyTypeModel.Default,
                     address = mutableString.split("name")[1].toDefaultFormat(),
                     country = mutableString.split("country")[1].toDefaultFormat(),
                     connectionType = mutableString.split("type")[1].toDefaultFormat(),
@@ -29,10 +31,10 @@ fun String.mapDefaultProxyEntitiesList(): List<ProxyDefaultEntity> {
     }
 }
 
-internal fun String.mapPremiumProxyEntitiesList(): List<ProxyPremiumEntity> {
+internal fun String.mapPremiumProxyEntitiesList(): List<ProxyEntity> {
     var mutableString = this
-    return mutableListOf<ProxyPremiumEntity>().apply {
-        while (mutableString.contains("id")) {
+    return mutableListOf<ProxyEntity>().apply {
+        while (mutableString.contains("host")) {
             add(
                 ProxyPremiumEntity(
                     id = mutableString.split("id")[1].toDefaultFormat().toInt(),
@@ -54,7 +56,7 @@ internal fun String.mapPremiumProxyEntitiesList(): List<ProxyPremiumEntity> {
                         .run { if (this.isEmpty()) 0 else this.toInt() },
                     active = mutableString.split("active")[1].toDefaultFormat()
                         .run { if (this.isEmpty()) 0 else this.toInt() },
-                )
+                ).mapToDefaultProxyEntity()
             )
             mutableString = mutableString.replaceFirst("id", "")
                 .replaceFirst("version", "")

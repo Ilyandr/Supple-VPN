@@ -1,15 +1,22 @@
 package gcu.product.supplevpn.presentation.views.items
 
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -18,7 +25,8 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import gcu.product.base.models.proxy.ProxyDefaultEntity
+import gcu.product.base.models.proxy.ProxyEntity
+import gcu.product.base.models.proxy.ProxyTypeModel
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.text.DefaultText
 import gcu.product.supplevpn.repository.features.utils.requireConnectionSpeedSource
@@ -26,7 +34,7 @@ import gcu.product.supplevpn.repository.features.utils.requireConnectionTypeSour
 import gcu.product.supplevpn.repository.features.utils.requireImage
 
 @Composable
-internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: ProxyDefaultEntity) {
+internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: ProxyEntity) {
 
     ConstraintLayout(constraintSet = requireConstraintSet(), modifier = Modifier.fillMaxWidth()) {
         AsyncImage(
@@ -37,14 +45,24 @@ internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: P
                 .layoutId("flagImage")
                 .height(64.dp)
                 .width(96.dp)
+                .border(2.dp, color = Color.LightGray, shape = RoundedCornerShape(16))
         )
+
         DefaultText(modifier = Modifier.layoutId("countryDescription"), text = item.country)
 
-        Image(
-            modifier = Modifier.layoutId("speedImage"),
-            painter = requireConnectionSpeedSource(item.speedMs).requireImage(),
-            contentDescription = null
-        )
+        Row(
+            Modifier
+                .layoutId("speedImage")
+                .clip(RoundedCornerShape(16))
+                .background(Color.White)
+                .wrapContentSize(Alignment.Center)
+        ) {
+            Image(
+                modifier = Modifier.size(36.dp),
+                painter = requireConnectionSpeedSource(item.speedMs).requireImage(),
+                contentDescription = null
+            )
+        }
 
         Row(
             modifier = Modifier.layoutId("typeDescription"),
@@ -57,6 +75,13 @@ internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: P
                 painter = requireConnectionTypeSource(item.connectionType).requireImage(),
                 contentDescription = null
             )
+            if (item.type is ProxyTypeModel.Premium) {
+                Spacer(modifier = Modifier.width(8.dp))
+                Image(
+                    painter = R.drawable.ic_premium.requireImage(),
+                    contentDescription = null
+                )
+            }
         }
     }
 }

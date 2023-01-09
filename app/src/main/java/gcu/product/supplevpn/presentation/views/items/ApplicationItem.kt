@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Switch
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
@@ -21,7 +22,10 @@ internal fun ApplicationItem(item: ApplicationEntity?) {
 
     if (item == null || item.name.isNullOrEmpty()) return
 
-    Row(Modifier.fillMaxWidth()) {
+    Row(
+        Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
         Spacer(modifier = Modifier.width(12.dp))
         item.image?.toBitmap()?.asImageBitmap()
             ?.run { Image(modifier = Modifier.size(48.dp), bitmap = this, contentDescription = null) }

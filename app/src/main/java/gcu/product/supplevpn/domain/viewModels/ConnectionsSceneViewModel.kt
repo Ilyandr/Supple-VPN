@@ -3,6 +3,7 @@ package gcu.product.supplevpn.domain.viewModels
 import androidx.lifecycle.viewModelScope
 import coil.request.ImageRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
+import gcu.product.base.models.proxy.ProxyEntity
 import gcu.product.supplevpn.domain.models.ConnectionsSceneModel
 import gcu.product.supplevpn.repository.features.utils.FlowSupport.set
 import gcu.product.supplevpn.repository.source.architecture.viewModels.FlowableViewModel
@@ -21,7 +22,7 @@ internal class ConnectionsSceneViewModel @Inject constructor(
 
     private val mutableStateFlow: MutableStateFlow<ConnectionsSceneModel> by lazy {
         MutableStateFlow(
-            ConnectionsSceneModel.LoadingState
+            ConnectionsSceneModel.InitState
         )
     }
     override val stateFlow by lazy { mutableStateFlow.asStateFlow() }
@@ -30,8 +31,7 @@ internal class ConnectionsSceneViewModel @Inject constructor(
     init {
         this.stateFlow.onEach { currentState ->
             when (currentState) {
-                is ConnectionsSceneModel.LoadingState -> requireDefaultProxyList()
-               // is ConnectionsSceneModel.DefaultProxyListState -> requirePremiumProxyList()
+                is ConnectionsSceneModel.InitState -> requireProxyList()
                 else -> Unit
             }
         }.launchIn(viewModelScope)
@@ -42,18 +42,17 @@ internal class ConnectionsSceneViewModel @Inject constructor(
     override fun faultAction(error: Throwable) =
         mutableStateFlow set ConnectionsSceneModel.FaultState(handleError(error))
 
-    override fun loadingAction(isLoading: Boolean) =
-        mutableStateFlow set if (isLoading) ConnectionsSceneModel.LoadingState else ConnectionsSceneModel.DefaultState
+    override fun setLoadingAction(isLoading: Boolean) =
+        mutableStateFlow set ConnectionsSceneModel.LoadingState(isLoading)
 
-    private fun requireDefaultProxyList() {
-        connectionUseCase.getDefaultProxyList().regularRequest { response ->
-            mutableStateFlow set ConnectionsSceneModel.DefaultProxyListState(response)
+    private fun requireProxyList() =
+        connectionUseCase.getDefaultProxyList().simpleRequest { responseDefaultProxy ->
+            connectionUseCase.getPremiumProxyList().simpleRequest { responsePremiumProxy ->
+                val concatList = mutableListOf<ProxyEntity>().apply {
+                    addAll(responseDefaultProxy)
+                    addAll(responsePremiumProxy)
+                }.apply { removeAll { it.country == "" } }
+                mutableStateFlow set ConnectionsSceneModel.ProxyListState(concatList)
+            }
         }
-    }
-
-    private fun requirePremiumProxyList() {
-        connectionUseCase.getPremiumProxyList().regularRequest { response ->
-            mutableStateFlow set ConnectionsSceneModel.PremiumProxyListState(response)
-        }
-    }
 }
