@@ -1,5 +1,6 @@
 package gcu.product.supplevpn.presentation.views.items
 
+import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -25,8 +26,8 @@ import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import gcu.product.base.models.proxy.ProxyEntity
-import gcu.product.base.models.proxy.ProxyTypeModel
+import gcu.product.base.models.proxy.VpnModel
+import gcu.product.base.models.proxy.VpnTypeModel
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.text.DefaultText
 import gcu.product.supplevpn.repository.features.utils.requireConnectionSpeedSource
@@ -34,8 +35,9 @@ import gcu.product.supplevpn.repository.features.utils.requireConnectionTypeSour
 import gcu.product.supplevpn.repository.features.utils.requireImage
 
 @Composable
-internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: ProxyEntity) {
+internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: VpnModel) {
 
+    Log.e("data", item.toString())
     ConstraintLayout(constraintSet = requireConstraintSet(), modifier = Modifier.fillMaxWidth()) {
         AsyncImage(
             model = imageRequestBuilder.data(item.requireImageHost()).build(),
@@ -48,7 +50,7 @@ internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: P
                 .border(2.dp, color = Color.LightGray, shape = RoundedCornerShape(16))
         )
 
-        DefaultText(modifier = Modifier.layoutId("countryDescription"), text = item.country)
+        DefaultText(modifier = Modifier.layoutId("countryDescription"), text = item.countryShort ?: "Unknown")
 
         Row(
             Modifier
@@ -59,7 +61,7 @@ internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: P
         ) {
             Image(
                 modifier = Modifier.size(36.dp),
-                painter = requireConnectionSpeedSource(item.speedMs).requireImage(),
+                painter = requireConnectionSpeedSource(item.ping?.toInt() ?: 999).requireImage(),
                 contentDescription = null
             )
         }
@@ -69,13 +71,13 @@ internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: P
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            DefaultText(text = item.connectionType, fontSize = 18.sp)
+            DefaultText(text = item.protocol!!, fontSize = 18.sp)
             Spacer(modifier = Modifier.width(8.dp))
             Image(
-                painter = requireConnectionTypeSource(item.connectionType).requireImage(),
+                painter = requireConnectionTypeSource(item.protocol!!).requireImage(),
                 contentDescription = null
             )
-            if (item.type is ProxyTypeModel.Premium) {
+            if (item.type is VpnTypeModel.Premium) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Image(
                     painter = R.drawable.ic_premium.requireImage(),

@@ -25,11 +25,11 @@ internal fun Application.initOneSignal() {
     OneSignal.setAppId(Constants.oneSignalId)
 }
 
-internal fun requireConnectionSpeedSource(speedMs: Long) = when {
-    speedMs <= 50 -> R.drawable.ic_connection_great
-    speedMs <= 100 -> R.drawable.ic_connection_good
-    speedMs <= 200 -> R.drawable.ic_connection_ok
-    speedMs <= 300 -> R.drawable.ic_connection_low
+internal fun requireConnectionSpeedSource(speedMs: Int) = when {
+    speedMs <= 20 -> R.drawable.ic_connection_great
+    speedMs <= 40 -> R.drawable.ic_connection_good
+    speedMs <= 90 -> R.drawable.ic_connection_ok
+    speedMs <= 150 -> R.drawable.ic_connection_low
     else -> R.drawable.ic_connection_bad
 }
 

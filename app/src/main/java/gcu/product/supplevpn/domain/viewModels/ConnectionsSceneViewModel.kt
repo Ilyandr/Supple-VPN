@@ -3,7 +3,6 @@ package gcu.product.supplevpn.domain.viewModels
 import androidx.lifecycle.viewModelScope
 import coil.request.ImageRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
-import gcu.product.base.models.proxy.ProxyEntity
 import gcu.product.supplevpn.domain.models.ConnectionsSceneModel
 import gcu.product.supplevpn.repository.features.utils.FlowSupport.set
 import gcu.product.supplevpn.repository.source.architecture.viewModels.FlowableViewModel
@@ -46,13 +45,7 @@ internal class ConnectionsSceneViewModel @Inject constructor(
         mutableStateFlow set ConnectionsSceneModel.LoadingState(isLoading)
 
     private fun requireProxyList() =
-        connectionUseCase.getDefaultProxyList().simpleRequest { responseDefaultProxy ->
-            connectionUseCase.getPremiumProxyList().simpleRequest { responsePremiumProxy ->
-                val concatList = mutableListOf<ProxyEntity>().apply {
-                    addAll(responseDefaultProxy)
-                    addAll(responsePremiumProxy)
-                }.apply { removeAll { it.country == "" } }
-                mutableStateFlow set ConnectionsSceneModel.ProxyListState(concatList)
-            }
+        connectionUseCase.getDefaultProxyList().simpleRequest { response ->
+            mutableStateFlow set ConnectionsSceneModel.ProxyListState(response)
         }
 }

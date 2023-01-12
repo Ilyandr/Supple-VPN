@@ -35,6 +35,8 @@ internal class HomeSceneViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
+    fun requirePackageManager() = this.packageManager
+
     private fun requireListApplications() =
         viewModelScope.launch(Dispatchers.Main) {
             mutableStateFlow set HomeSceneModel.InitPageState(

@@ -28,8 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import gcu.product.base.models.proxy.ProxyEntity
-import gcu.product.base.models.proxy.ProxyTypeModel.Default.requireHeaderStringResByType
+import gcu.product.base.models.proxy.VpnModel
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.domain.models.ConnectionsSceneModel
 import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel
@@ -43,7 +42,7 @@ import gcu.product.supplevpn.repository.features.utils.requireImage
 internal fun ConnectionsScene(navController: NavController, viewModel: ConnectionsSceneViewModel = hiltViewModel()) {
 
     val viewState = viewModel.stateFlow.collectAsState()
-    val proxyListDefault = rememberSaveable { mutableStateOf(listOf<ProxyEntity>()) }
+    val proxyListDefault = rememberSaveable { mutableStateOf(listOf<VpnModel>()) }
     val loadingState = rememberSaveable { mutableStateOf(true) }
 
     when (val value = viewState.value) {
@@ -51,6 +50,7 @@ internal fun ConnectionsScene(navController: NavController, viewModel: Connectio
             proxyListDefault.value = value.list
             viewModel.setLoadingAction(false)
         }
+
         is ConnectionsSceneModel.LoadingState -> loadingState.value = value.isLoading
         else -> Unit
     }
@@ -58,7 +58,7 @@ internal fun ConnectionsScene(navController: NavController, viewModel: Connectio
     Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillHeight,
+            contentScale = ContentScale.FillBounds,
             painter = R.drawable.ic_home_background.requireImage(),
             contentDescription = "background"
         )

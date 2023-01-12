@@ -1,5 +1,6 @@
 package gcu.product.supplevpn.presentation.views.items
 
+import android.content.pm.PackageManager
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -18,17 +19,20 @@ import gcu.product.supplevpn.presentation.views.text.DefaultText
 import gcu.product.supplevpn.repository.entities.ApplicationEntity
 
 @Composable
-internal fun ApplicationItem(item: ApplicationEntity?) {
+internal fun ApplicationItem(packageManager: PackageManager, item: ApplicationEntity?) {
 
-    if (item == null || item.name.isNullOrEmpty()) return
+    if (item == null || item.name.isNullOrEmpty() || item.imagePath.isNullOrEmpty()) return
 
     Row(
         Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center,
         verticalAlignment = Alignment.CenterVertically
     ) {
         Spacer(modifier = Modifier.width(12.dp))
-        item.image?.toBitmap()?.asImageBitmap()
-            ?.run { Image(modifier = Modifier.size(48.dp), bitmap = this, contentDescription = null) }
+        Image(
+            modifier = Modifier.size(48.dp),
+            bitmap = packageManager.getApplicationIcon(item.imagePath).toBitmap().asImageBitmap(),
+            contentDescription = null
+        )
         Spacer(modifier = Modifier.width(12.dp))
         DefaultText(text = item.name.toString())
         Spacer(modifier = Modifier.width(12.dp))

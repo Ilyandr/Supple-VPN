@@ -6,16 +6,15 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
-import gcu.product.gateway.Constants.PROXY_API_HOST_DEFAULT
-import gcu.product.gateway.Constants.PROXY_API_HOST_PREMIUM
+import gcu.product.gateway.Constants.VPN_API_HOST
 import gcu.product.supplevpn.repository.features.utils.Constants.RETROFIT_DEFAULT
-import gcu.product.supplevpn.repository.features.utils.Constants.RETROFIT_PREMIUM
 import okhttp3.OkHttpClient
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
+import retrofit2.converter.scalars.ScalarsConverterFactory
 import javax.inject.Named
 
 @Module
@@ -32,31 +31,23 @@ class RetrofitModule {
     fun provideCallAdapterFactory(): CallAdapter.Factory = RxJava3CallAdapterFactory.create()
 
     @Provides
-    fun provideConverterFactory(config: Gson): Converter.Factory = GsonConverterFactory.create(config)
+    @Named("gsonFactory")
+    fun provideGsonConverterFactory(config: Gson): Converter.Factory = GsonConverterFactory.create(config)
+
+    @Provides
+    @Named("scalarsFactory")
+    fun provideScalarsConverterFactory(): Converter.Factory = ScalarsConverterFactory.create()
 
     @Provides
     @Named(RETROFIT_DEFAULT)
     fun provideDefaultRetrofit(
         callAdapterFactory: CallAdapter.Factory,
-        converterFactory: Converter.Factory,
+        @Named("scalarsFactory") converterScalarsFactory: Converter.Factory,
         client: OkHttpClient
     ): Retrofit = Retrofit.Builder()
-        .baseUrl(PROXY_API_HOST_DEFAULT)
+        .baseUrl(VPN_API_HOST)
         .client(client)
         .addCallAdapterFactory(callAdapterFactory)
-        .addConverterFactory(converterFactory)
-        .build()
-
-    @Provides
-    @Named(RETROFIT_PREMIUM)
-    fun providePremiumRetrofit(
-        callAdapterFactory: CallAdapter.Factory,
-        converterFactory: Converter.Factory,
-        client: OkHttpClient
-    ): Retrofit = Retrofit.Builder()
-        .baseUrl(PROXY_API_HOST_PREMIUM)
-        .client(client)
-        .addCallAdapterFactory(callAdapterFactory)
-        .addConverterFactory(converterFactory)
+        .addConverterFactory(converterScalarsFactory)
         .build()
 }

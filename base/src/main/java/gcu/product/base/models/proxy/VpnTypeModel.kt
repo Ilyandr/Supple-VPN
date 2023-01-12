@@ -1,11 +1,16 @@
 package gcu.product.base.models.proxy
 
+import android.os.Parcelable
 import gcu.product.base.R
+import kotlinx.parcelize.Parcelize
 
-sealed class ProxyTypeModel {
 
-    object Default : ProxyTypeModel()
-    data class Premium(val user: String, val password: String) : ProxyTypeModel()
+// Development state
+@Parcelize
+sealed class VpnTypeModel: Parcelable {
+
+    object Default : VpnTypeModel()
+    object Premium : VpnTypeModel()
 
     fun requireHeaderStringResByType() = when (this) {
         is Default -> R.string.proxy_list_header_default

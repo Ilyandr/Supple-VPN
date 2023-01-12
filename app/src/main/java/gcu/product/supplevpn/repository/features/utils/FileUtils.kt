@@ -35,7 +35,7 @@ internal object FileUtils {
                         ApplicationEntity(
                             name = getApplicationLabel(singleInfo),
                             isLaunched = singleInfo.enabled,
-                            image = getApplicationIcon(singleInfo),
+                            imagePath = singleInfo.packageName,
                             isEnabled = userPreferences.getBoolean(singleInfo.name, false)
                         )
                     } else null

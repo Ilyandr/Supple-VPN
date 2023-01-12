@@ -1,5 +1,10 @@
 package gcu.product.supplevpn.presentation.scenes.fragments
 
+import android.app.Activity
+import android.net.VpnService.prepare
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -18,6 +23,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -43,6 +50,8 @@ import com.simform.ssjetpackcomposeprogressbuttonlibrary.utils.six
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.domain.models.HomeSceneModel
 import gcu.product.supplevpn.domain.viewModels.HomeSceneViewModel
+import gcu.product.supplevpn.presentation.scenes.activities.HostActivity
+import gcu.product.supplevpn.presentation.service.SuppleVpnService.Companion.requireVpnIntent
 import gcu.product.supplevpn.presentation.views.items.ApplicationItem
 import gcu.product.supplevpn.presentation.views.items.InfoConnectionView
 import gcu.product.supplevpn.repository.entities.ApplicationEntity
@@ -55,8 +64,23 @@ import gcu.product.supplevpn.repository.features.utils.requireImage
 internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneViewModel = hiltViewModel()) {
 
     val viewState = viewModel.stateFlow.collectAsState()
+    val context = LocalContext.current
     val appList = rememberSaveable { mutableStateOf(listOf<ApplicationEntity?>()) }
     val loadingState = rememberSaveable { mutableStateOf(true) }
+    val vpnContractLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == Activity.RESULT_OK) {
+            (context as HostActivity).startService(context.requireVpnIntent())
+        }
+    }
+
+    SideEffect {
+        prepare(context)?.run {
+            vpnContractLauncher.launch(this)
+        } ?: (context as HostActivity).startService(context.requireVpnIntent())
+
+    }
 
     when (val value = viewState.value) {
         is HomeSceneModel.InitPageState -> {
@@ -71,7 +95,7 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
     ConstraintLayout(requireHomeSceneConstraints()) {
         Image(
             modifier = Modifier.layoutId("backgroundView"),
-            contentScale = ContentScale.FillHeight,
+            contentScale = ContentScale.FillBounds,
             painter = R.drawable.ic_home_background.requireImage(),
             contentDescription = "background"
         )
@@ -138,6 +162,8 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
         if (loadingState.value) {
             CircularProgressIndicator(modifier = Modifier.layoutId("progressView"), color = Color.White)
         }
+        Log.e("data", appList.value.toString())
+
 
         Card(
             modifier = Modifier.layoutId("listApp"),
@@ -146,8 +172,9 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
         ) {
             if (!loadingState.value) {
                 LazyColumn(
+                    modifier = Modifier.padding(vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) { items(appList.value) { ApplicationItem(item = it) } }
+                ) { items(appList.value) { ApplicationItem(viewModel.requirePackageManager(), item = it) } }
             }
         }
     }

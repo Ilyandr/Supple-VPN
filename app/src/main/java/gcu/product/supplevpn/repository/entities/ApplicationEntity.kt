@@ -1,10 +1,11 @@
 package gcu.product.supplevpn.repository.entities
 
-import android.graphics.drawable.Drawable
+import android.os.Parcelable
 
+@kotlinx.parcelize.Parcelize
 data class ApplicationEntity(
     val name: CharSequence?,
-    val image: Drawable?,
+    val imagePath: String?,
     val isEnabled: Boolean = false,
     val isLaunched: Boolean = false
-)
+) : Parcelable
