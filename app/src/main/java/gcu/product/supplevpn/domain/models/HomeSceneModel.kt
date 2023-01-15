@@ -1,7 +1,8 @@
 package gcu.product.supplevpn.domain.models
 
-import gcu.product.supplevpn.repository.entities.ApplicationEntity
-import gcu.product.supplevpn.repository.entities.ConnectionStatus
+
+import gcu.product.base.models.apps.ApplicationEntity
+import gcu.product.base.models.apps.ConnectionStatus
 
 internal sealed class HomeSceneModel {
 

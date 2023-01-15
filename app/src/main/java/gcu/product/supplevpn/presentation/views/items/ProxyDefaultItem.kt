@@ -27,8 +27,7 @@ import androidx.constraintlayout.compose.Dimension
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import gcu.product.base.models.proxy.VpnModel
-import gcu.product.base.models.proxy.VpnTypeModel
+import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.text.DefaultText
 import gcu.product.supplevpn.repository.features.utils.requireConnectionSpeedSource
@@ -40,7 +39,7 @@ import gcu.product.supplevpn.repository.features.utils.vpnAction
 internal inline fun ProxyDefaultItem(
     imageRequest: ImageRequest.Builder,
     imageLoader: ImageLoader,
-    item: VpnModel,
+    item: ConnectionEntity,
     crossinline callback: vpnAction
 ) {
     ConstraintLayout(constraintSet = requireConstraintSet(), modifier = Modifier
@@ -85,7 +84,7 @@ internal inline fun ProxyDefaultItem(
                 painter = requireConnectionTypeSource(item.protocol!!).requireImage(),
                 contentDescription = null
             )
-            if (item.type is VpnTypeModel.Premium) {
+            if (!item.isDefaultServer) {
                 Spacer(modifier = Modifier.width(8.dp))
                 Image(
                     painter = R.drawable.ic_premium.requireImage(),

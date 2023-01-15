@@ -8,7 +8,7 @@
 
     <!--network errors-->
     <string name="message_timeout_exception">На данный момент сервер недоступен</string>
-    <string name="message_network_exception">Ошибка соеденения с сервером - проверьте ваше подключение</string>
+    <string name="message_network_exception">Ошибка интернет соеденения</string>
     <string name="message_unknown_exception">Неизвестная ошибка</string>
     <string name="description_connection_list">Список серверов</string>
     <string name="text_server_none_selected">Сервер не выбран</string>

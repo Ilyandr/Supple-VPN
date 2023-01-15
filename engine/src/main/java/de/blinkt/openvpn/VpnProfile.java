@@ -758,15 +758,7 @@ public class VpnProfile implements Serializable, Cloneable {
     }
 
     public Intent prepareStartService(Context context) {
-        Intent intent = getStartServiceIntent(context);
-
-        // TODO: Handle this?!
-//        if (mAuthenticationType == VpnProfile.TYPE_KEYSTORE || mAuthenticationType == VpnProfile.TYPE_USERPASS_KEYSTORE) {
-//            if (getKeyStoreCertificates(context) == null)
-//                return null;
-//        }
-
-        return intent;
+        return getStartServiceIntent(context);
     }
 
     public void writeConfigFile(Context context) throws IOException {

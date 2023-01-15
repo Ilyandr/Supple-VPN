@@ -53,8 +53,9 @@ import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel
 import gcu.product.supplevpn.domain.viewModels.HomeSceneViewModel
 import gcu.product.supplevpn.presentation.views.items.ApplicationItem
 import gcu.product.supplevpn.presentation.views.items.InfoConnectionView
-import gcu.product.supplevpn.repository.entities.ApplicationEntity
-import gcu.product.supplevpn.repository.entities.ConnectionStatus
+import gcu.product.base.models.apps.ApplicationEntity
+import gcu.product.base.models.apps.ConnectionStatus
+import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.repository.features.utils.Constants
 import gcu.product.supplevpn.repository.features.utils.Utils.launchVpnService
 import gcu.product.supplevpn.repository.features.utils.requireImage
@@ -73,7 +74,7 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
     val selectedVpnModelState = remember {
         navController.currentBackStackEntry
             ?.savedStateHandle
-            ?.getLiveData<VpnModel>(ConnectionsSceneViewModel.SELECTED_VPN_KEY)
+            ?.getLiveData<ConnectionEntity>(ConnectionsSceneViewModel.SELECTED_VPN_KEY)
     }
     val vpnContractLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -193,7 +194,15 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
                 LazyColumn(
                     modifier = Modifier.padding(vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),
-                ) { items(appList.value) { ApplicationItem(viewModel.requirePackageManager(), item = it) } }
+                ) {
+                    items(appList.value) {
+                        ApplicationItem(
+                            viewModel.requirePackageManager(),
+                            item = it,
+                            viewModel::changeAppEnabled
+                        )
+                    }
+                }
             }
         }
     }

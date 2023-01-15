@@ -25,11 +25,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
-import gcu.product.base.models.proxy.VpnModel
+import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
+import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.domain.models.ConnectionsSceneModel
 import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel
@@ -37,6 +40,7 @@ import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel.Compani
 import gcu.product.supplevpn.presentation.views.items.BaseHeaderItem
 import gcu.product.supplevpn.presentation.views.items.ProxyDefaultItem
 import gcu.product.supplevpn.presentation.views.text.DefaultText
+import gcu.product.supplevpn.repository.features.utils.Utils.showToast
 import gcu.product.supplevpn.repository.features.utils.requireImage
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
@@ -44,8 +48,9 @@ import gcu.product.supplevpn.repository.features.utils.requireImage
 internal fun ConnectionsScene(navController: NavController, viewModel: ConnectionsSceneViewModel = hiltViewModel()) {
 
     val viewState = viewModel.stateFlow.collectAsState()
-    val proxyListDefault = remember { mutableStateOf(sequenceOf<VpnModel>()) }
+    val proxyListDefault = remember { mutableStateOf(sequenceOf<ConnectionEntity>()) }
     val loadingState = rememberSaveable { mutableStateOf(true) }
+    val refreshState = rememberSwipeRefreshState(isRefreshing = true)
 
     when (val value = viewState.value) {
         is ConnectionsSceneModel.ProxyListState -> {
@@ -53,7 +58,15 @@ internal fun ConnectionsScene(navController: NavController, viewModel: Connectio
             viewModel.setLoadingAction(false)
         }
 
-        is ConnectionsSceneModel.LoadingState -> loadingState.value = value.isLoading
+        is ConnectionsSceneModel.LoadingState -> {
+            loadingState.value = value.isLoading
+            refreshState.isRefreshing = value.isLoading
+        }
+
+        is ConnectionsSceneModel.FaultState -> {
+            LocalContext.current showToast value.error
+        }
+
         else -> Unit
     }
 
@@ -87,19 +100,27 @@ internal fun ConnectionsScene(navController: NavController, viewModel: Connectio
                     )
                 })
 
-            LazyColumn(
-                modifier = Modifier.padding(vertical = 12.dp),
-                verticalArrangement = Arrangement.spacedBy(12.dp),
-            ) {
-                proxyListDefault.value.groupBy {
-                    it.type.requireHeaderStringResByType()
-                }.forEach { (section, sectionProxy) ->
-                    stickyHeader { BaseHeaderItem(section) }
-                    items(sectionProxy) {
-                        ProxyDefaultItem(viewModel.requireImageRequest(), viewModel.requireImageLoader(), it) { item ->
-                            with(navController) {
-                                previousBackStackEntry?.savedStateHandle?.set(SELECTED_VPN_KEY, item)
-                                popBackStack()
+            SwipeRefresh(state = refreshState, onRefresh = {
+                viewModel.requireProxyList(false)
+            }) {
+                LazyColumn(
+                    modifier = Modifier.padding(vertical = 12.dp),
+                    verticalArrangement = Arrangement.spacedBy(12.dp),
+                ) {
+                    proxyListDefault.value.groupBy {
+                        it.requireHeaderStringResByFlag()
+                    }.forEach { (section, sectionProxy) ->
+                        stickyHeader { BaseHeaderItem(section) }
+                        items(sectionProxy) {
+                            ProxyDefaultItem(
+                                viewModel.requireImageRequest(),
+                                viewModel.requireImageLoader(),
+                                it
+                            ) { item ->
+                                with(navController) {
+                                    previousBackStackEntry?.savedStateHandle?.set(SELECTED_VPN_KEY, item)
+                                    popBackStack()
+                                }
                             }
                         }
                     }

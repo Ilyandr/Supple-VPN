@@ -16,7 +16,7 @@ import androidx.compose.ui.unit.dp
 import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import gcu.product.base.models.proxy.VpnModel
+import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.text.DefaultText
 import gcu.product.supplevpn.repository.features.utils.requireImage
@@ -26,7 +26,7 @@ internal fun InfoConnectionView(
     modifier: Modifier,
     imageRequest: ImageRequest.Builder,
     imageLoader: ImageLoader,
-    item: VpnModel?
+    item: ConnectionEntity?
 ) =
     Row(modifier = modifier, verticalAlignment = Alignment.CenterVertically) {
         AsyncImage(

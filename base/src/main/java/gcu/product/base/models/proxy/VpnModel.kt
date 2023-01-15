@@ -29,7 +29,25 @@ data class VpnModel(
 
     fun requireImageHost() = "${FLAGS_API_HOST}${countryShort?.lowercase(Locale.getDefault())}.svg"
 
+    fun mapToConnectionEntity() = ConnectionEntity(
+        isDefaultServer = type is VpnTypeModel.Default,
+        countryLong = countryLong,
+        countryShort = countryShort,
+        ovpnConfigData = ovpnConfigData,
+        ping = ping,
+        protocol = protocol
+    )
+
     companion object {
-        private const val FLAGS_API_HOST = "https://flagcdn.com/"
+        const val FLAGS_API_HOST = "https://flagcdn.com/"
+
+        internal enum class ConnectionStatus {
+            LOADING, CONNECTED, FAULT
+        }
+
+        internal fun String.mapToConnectionStatus() = when (this) {
+            "CONNECTED" -> ConnectionStatus.CONNECTED
+            else -> ConnectionStatus.LOADING
+        }
     }
 }

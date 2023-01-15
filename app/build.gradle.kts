@@ -78,9 +78,10 @@ dependencies {
     val material3Version = "1.0.1"
     val splashVersion = "1.0.0"
     val coilVersion = "2.2.2"
+    val swipeRefreshVersion = "0.24.13-rc"
     implementation("io.coil-kt:coil-svg:$coilVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
-    implementation("com.google.accompanist:accompanist-swiperefresh:0.24.13-rc")
+    implementation("com.google.accompanist:accompanist-swiperefresh:$swipeRefreshVersion")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
     implementation("androidx.core:core-splashscreen:$splashVersion")
     implementation("androidx.compose.ui:ui-tooling-preview:$composeVersion")

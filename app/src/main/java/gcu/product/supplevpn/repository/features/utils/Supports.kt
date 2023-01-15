@@ -4,12 +4,12 @@ import android.annotation.SuppressLint
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
-import gcu.product.base.models.proxy.VpnModel
+import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.R
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal typealias unitAction = () -> Unit
-internal typealias vpnAction = (item: VpnModel) -> Unit
+internal typealias vpnAction = (item: ConnectionEntity) -> Unit
 
 @SuppressLint("ComposableNaming")
 @Composable
