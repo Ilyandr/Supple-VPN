@@ -1,8 +1,8 @@
 package gcu.product.gateway.mappers
 
-import android.util.Base64
 import gcu.product.base.models.proxy.VpnModel
 import gcu.product.base.models.proxy.VpnTypeModel
+import saschpe.kase64.base64Decoded
 import java.io.BufferedReader
 import java.io.IOException
 import java.io.InputStream
@@ -28,41 +28,39 @@ object VpnEntityMapper {
     private const val PORT_INDEX = 2
     private const val PROTOCOL_INDEX = 1
 
-    private fun stringToServer(line: String): VpnModel {
-        val vpn = line.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        val vpnModel = VpnModel(type = VpnTypeModel.Default)
-        vpnModel.hostName = vpn[HOST_NAME]
-        vpnModel.ipAddress = vpn[IP_ADDRESS]
-        vpnModel.score = vpn[SCORE].toInt()
-        vpnModel.ping = vpn[PING]
-        vpnModel.speed = vpn[SPEED].toLong()
-        vpnModel.countryLong = vpn[COUNTRY_LONG]
-        vpnModel.countryShort = vpn[COUNTRY_SHORT]
-        vpnModel.vpnSessions = vpn[VPN_SESSION].toLong()
-        vpnModel.uptime = vpn[UPTIME].toLong()
-        vpnModel.totalUsers = vpn[TOTAL_USERS].toLong()
-        vpnModel.totalTraffic = vpn[TOTAL_TRAFFIC]
-        vpnModel.logType = vpn[LOG_TYPE]
-        vpnModel.operator = vpn[OPERATOR]
-        vpnModel.message = vpn[MESSAGE]
-        vpnModel.ovpnConfigData = String(
-            Base64.decode(
-                vpn[OVPN_CONFIG_DATA], Base64.DEFAULT
-            )
-        )
-        val lines = vpnModel.ovpnConfigData!!.split("[\\r\\n]+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
-        vpnModel.port = getPort(lines)
-        vpnModel.protocol = getProtocol(lines)
-        return vpnModel
-    }
+    private fun stringToServer(line: String): VpnModel =
+        line.split(",".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray().run {
+            val vpnModel = VpnModel(type = VpnTypeModel.Default).apply {
+                hostName = get(HOST_NAME)
+                ipAddress = get(IP_ADDRESS)
+                score = get(SCORE).toInt()
+                ping = get(PING)
+                speed = get(SPEED).toLong()
+                countryLong = get(COUNTRY_LONG)
+                countryShort = get(COUNTRY_SHORT)
+                vpnSessions = get(VPN_SESSION).toLong()
+                uptime = get(UPTIME).toLong()
+                totalUsers = get(TOTAL_USERS).toLong()
+                totalTraffic = get(TOTAL_TRAFFIC)
+                logType = get(LOG_TYPE)
+                operator = get(OPERATOR)
+                message = get(MESSAGE)
+                ovpnConfigData = get(OVPN_CONFIG_DATA).base64Decoded
+            }
+            val lines = vpnModel.ovpnConfigData!!.split("[\\r\\n]+".toRegex()).dropLastWhile { it.isEmpty() }.toTypedArray()
+            vpnModel.port = getPort(lines)
+            vpnModel.protocol = getProtocol(lines)
+            vpnModel
+        }
 
-    fun String.mapToVpnEntity(): List<VpnModel> {
+    fun String.mapToVpnSequence(): Sequence<VpnModel> {
+
         val vpnEntities: MutableList<VpnModel> = mutableListOf()
-        var `in`: InputStream? = null
+        var inputStream: InputStream? = null
         var reader: BufferedReader? = null
         try {
-            `in` = byteInputStream()
-            reader = BufferedReader(InputStreamReader(`in`))
+            inputStream = byteInputStream()
+            reader = BufferedReader(InputStreamReader(inputStream))
             var line: String?
             while (reader.readLine().also { line = it } != null) {
                 if (!line!!.startsWith("*") && !line!!.startsWith("#")) {
@@ -73,11 +71,11 @@ object VpnEntityMapper {
         } finally {
             try {
                 reader?.close()
-                `in`?.close()
+                inputStream?.close()
             } catch (ignored: IOException) {
             }
         }
-        return vpnEntities
+        return vpnEntities.asSequence()
     }
 
     private fun getPort(lines: Array<String>): Int {

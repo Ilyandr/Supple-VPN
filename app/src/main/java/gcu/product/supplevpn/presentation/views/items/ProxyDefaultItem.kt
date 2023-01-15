@@ -1,9 +1,9 @@
 package gcu.product.supplevpn.presentation.views.items
 
-import android.util.Log
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.constraintlayout.compose.ConstraintSet
 import androidx.constraintlayout.compose.Dimension
+import coil.ImageLoader
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import gcu.product.base.models.proxy.VpnModel
@@ -33,14 +34,21 @@ import gcu.product.supplevpn.presentation.views.text.DefaultText
 import gcu.product.supplevpn.repository.features.utils.requireConnectionSpeedSource
 import gcu.product.supplevpn.repository.features.utils.requireConnectionTypeSource
 import gcu.product.supplevpn.repository.features.utils.requireImage
+import gcu.product.supplevpn.repository.features.utils.vpnAction
 
 @Composable
-internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: VpnModel) {
-
-    Log.e("data", item.toString())
-    ConstraintLayout(constraintSet = requireConstraintSet(), modifier = Modifier.fillMaxWidth()) {
+internal inline fun ProxyDefaultItem(
+    imageRequest: ImageRequest.Builder,
+    imageLoader: ImageLoader,
+    item: VpnModel,
+    crossinline callback: vpnAction
+) {
+    ConstraintLayout(constraintSet = requireConstraintSet(), modifier = Modifier
+        .fillMaxWidth()
+        .clickable { callback.invoke(item) }) {
         AsyncImage(
-            model = imageRequestBuilder.data(item.requireImageHost()).build(),
+            imageLoader = imageLoader,
+            model = imageRequest.data(item.requireImageHost()).build(),
             placeholder = R.drawable.ic_launcher_foreground.requireImage(),
             contentDescription = null,
             modifier = Modifier
@@ -61,7 +69,7 @@ internal fun ProxyDefaultItem(imageRequestBuilder: ImageRequest.Builder, item: V
         ) {
             Image(
                 modifier = Modifier.size(36.dp),
-                painter = requireConnectionSpeedSource(item.ping?.toInt() ?: 999).requireImage(),
+                painter = requireConnectionSpeedSource(item.ping?.toIntOrNull() ?: 999).requireImage(),
                 contentDescription = null
             )
         }

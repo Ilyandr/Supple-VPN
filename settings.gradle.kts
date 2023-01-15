@@ -15,7 +15,7 @@ dependencyResolutionManagement {
 }
 rootProject.name = "Supple VPN"
 include(":app")
-
+include(":engine")
 include(":usecase")
 include(":gateway")
 include(":base")

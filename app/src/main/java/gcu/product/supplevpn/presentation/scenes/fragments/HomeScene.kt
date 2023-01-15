@@ -2,7 +2,7 @@ package gcu.product.supplevpn.presentation.scenes.fragments
 
 import android.app.Activity
 import android.net.VpnService.prepare
-import android.util.Log
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
@@ -23,7 +23,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,45 +46,58 @@ import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSButtonType
 import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSCustomLoadingEffect
 import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSJetPackComposeProgressButton
 import com.simform.ssjetpackcomposeprogressbuttonlibrary.utils.six
+import gcu.product.base.models.proxy.VpnModel
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.domain.models.HomeSceneModel
+import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel
 import gcu.product.supplevpn.domain.viewModels.HomeSceneViewModel
-import gcu.product.supplevpn.presentation.scenes.activities.HostActivity
-import gcu.product.supplevpn.presentation.service.SuppleVpnService.Companion.requireVpnIntent
 import gcu.product.supplevpn.presentation.views.items.ApplicationItem
 import gcu.product.supplevpn.presentation.views.items.InfoConnectionView
 import gcu.product.supplevpn.repository.entities.ApplicationEntity
+import gcu.product.supplevpn.repository.entities.ConnectionStatus
 import gcu.product.supplevpn.repository.features.utils.Constants
+import gcu.product.supplevpn.repository.features.utils.Utils.launchVpnService
 import gcu.product.supplevpn.repository.features.utils.requireImage
 
-//Development now
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneViewModel = hiltViewModel()) {
 
+
     val viewState = viewModel.stateFlow.collectAsState()
     val context = LocalContext.current
+    var submitButtonState by rememberSaveable { mutableStateOf(SSButtonState.IDLE) }
     val appList = rememberSaveable { mutableStateOf(listOf<ApplicationEntity?>()) }
     val loadingState = rememberSaveable { mutableStateOf(true) }
+    val selectedVpnModelState = remember {
+        navController.currentBackStackEntry
+            ?.savedStateHandle
+            ?.getLiveData<VpnModel>(ConnectionsSceneViewModel.SELECTED_VPN_KEY)
+    }
     val vpnContractLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
     ) { result ->
         if (result.resultCode == Activity.RESULT_OK) {
-            (context as HostActivity).startService(context.requireVpnIntent())
+            context launchVpnService selectedVpnModelState?.value
         }
     }
 
-    SideEffect {
-        prepare(context)?.run {
-            vpnContractLauncher.launch(this)
-        } ?: (context as HostActivity).startService(context.requireVpnIntent())
-
+    with(viewModel.requireReceiverData()) {
+        (context as ComponentActivity).registerReceiver(first, second)
     }
 
     when (val value = viewState.value) {
         is HomeSceneModel.InitPageState -> {
             appList.value = value.data
             loadingState.value = false
+        }
+
+        is HomeSceneModel.ConnectionStatusState -> {
+            submitButtonState = when (value.status) {
+                ConnectionStatus.CONNECTED -> SSButtonState.SUCCESS
+                else -> SSButtonState.LOADING
+            }
         }
 
         is HomeSceneModel.LoadingAppState -> loadingState.value = true
@@ -132,10 +144,10 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
 
         InfoConnectionView(
             modifier = Modifier.layoutId("infoView"),
-            image = R.drawable.ic_flag_example,
-            text = "Норвегия"
+            imageLoader = viewModel.requireImageLoader(),
+            imageRequest = viewModel.requireImageRequest(),
+            item = selectedVpnModelState?.value
         )
-        var submitButtonState by remember { mutableStateOf(SSButtonState.IDLE) }
 
         Box(modifier = Modifier.layoutId("powerButton")) {
 
@@ -143,27 +155,34 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
                 type = SSButtonType.CLOCK,
                 width = 120.dp,
                 height = 120.dp,
+                blinkingIcon = submitButtonState == SSButtonState.SUCCESS,
                 buttonBorderStroke = BorderStroke(2.dp, Color.LightGray),
                 colors = androidx.compose.material.ButtonDefaults.buttonColors(Color.White),
                 onClick = {
-                    navController.navigate(Constants.CONNECTIONS_DESTINATION)
+                    if (selectedVpnModelState?.value != null) {
+                        prepare(context)?.run {
+                            vpnContractLauncher.launch(this)
+                        } ?: (context launchVpnService selectedVpnModelState.value)
+                    } else {
+                        navController.navigate(Constants.CONNECTIONS_DESTINATION)
+                    }
                 },
                 elevation = androidx.compose.material.ButtonDefaults.elevation(6.dp),
-                assetColor = colorResource(id = R.color.primaryColor),
+                assetColor = colorResource(id = if (submitButtonState != SSButtonState.SUCCESS) R.color.primaryColor else R.color.green),
                 buttonState = submitButtonState,
-                successIconPainter = R.drawable.ic_launcher_foreground.requireImage(),
+                successIconPainter = R.drawable.ic_connection_complete.requireImage(),
                 failureIconPainter = R.drawable.ic_power.requireImage(),
                 padding = PaddingValues(six.dp),
-                rightImagePainter = R.drawable.ic_power.requireImage(),
+                rightImagePainter = if (submitButtonState != SSButtonState.SUCCESS) R.drawable.ic_power.requireImage() else R.drawable.ic_indicator_connection.requireImage(),
                 customLoadingEffect = SSCustomLoadingEffect(rotation = false, zoomInOut = true, colorChanger = false)
             )
         }
 
         if (loadingState.value) {
-            CircularProgressIndicator(modifier = Modifier.layoutId("progressView"), color = Color.White)
+            CircularProgressIndicator(
+                modifier = Modifier.layoutId("progressView"), color = Color.White
+            )
         }
-        Log.e("data", appList.value.toString())
-
 
         Card(
             modifier = Modifier.layoutId("listApp"),

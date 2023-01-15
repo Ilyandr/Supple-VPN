@@ -19,6 +19,7 @@ import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,6 +33,7 @@ import gcu.product.base.models.proxy.VpnModel
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.domain.models.ConnectionsSceneModel
 import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel
+import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel.Companion.SELECTED_VPN_KEY
 import gcu.product.supplevpn.presentation.views.items.BaseHeaderItem
 import gcu.product.supplevpn.presentation.views.items.ProxyDefaultItem
 import gcu.product.supplevpn.presentation.views.text.DefaultText
@@ -42,7 +44,7 @@ import gcu.product.supplevpn.repository.features.utils.requireImage
 internal fun ConnectionsScene(navController: NavController, viewModel: ConnectionsSceneViewModel = hiltViewModel()) {
 
     val viewState = viewModel.stateFlow.collectAsState()
-    val proxyListDefault = rememberSaveable { mutableStateOf(listOf<VpnModel>()) }
+    val proxyListDefault = remember { mutableStateOf(sequenceOf<VpnModel>()) }
     val loadingState = rememberSaveable { mutableStateOf(true) }
 
     when (val value = viewState.value) {
@@ -93,7 +95,14 @@ internal fun ConnectionsScene(navController: NavController, viewModel: Connectio
                     it.type.requireHeaderStringResByType()
                 }.forEach { (section, sectionProxy) ->
                     stickyHeader { BaseHeaderItem(section) }
-                    items(sectionProxy) { ProxyDefaultItem(viewModel.imageRequest, it) }
+                    items(sectionProxy) {
+                        ProxyDefaultItem(viewModel.requireImageRequest(), viewModel.requireImageLoader(), it) { item ->
+                            with(navController) {
+                                previousBackStackEntry?.savedStateHandle?.set(SELECTED_VPN_KEY, item)
+                                popBackStack()
+                            }
+                        }
+                    }
                 }
             }
         }

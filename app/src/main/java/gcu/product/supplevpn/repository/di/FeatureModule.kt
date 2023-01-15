@@ -1,8 +1,11 @@
 package gcu.product.supplevpn.repository.di
 
 import android.content.Context
+import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import coil.ImageLoader
+import coil.decode.SvgDecoder
 import coil.request.CachePolicy
 import coil.request.ImageRequest
 import coil.transform.RoundedCornersTransformation
@@ -25,10 +28,17 @@ internal class FeatureModule {
     fun providePackageManager(@ApplicationContext context: Context): PackageManager = context.packageManager
 
     @Provides
+    fun provideConnectionReceiverFilter() = IntentFilter("de.blinkt.openvpn.VPN_STATUS")
+
+    @Provides
     fun provideImageFlagsRequestBuilder(@ApplicationContext context: Context): ImageRequest.Builder =
         ImageRequest.Builder(context)
             .crossfade(false)
             .transformations(RoundedCornersTransformation(32f))
             .diskCachePolicy(CachePolicy.ENABLED)
             .memoryCachePolicy(CachePolicy.ENABLED)
+
+    @Provides
+    fun provideImageSvgLoader(@ApplicationContext context: Context): ImageLoader =
+        ImageLoader.Builder(context).components { add(SvgDecoder.Factory()) }.build()
 }

@@ -1,15 +1,15 @@
 package gcu.product.supplevpn.repository.features.utils
 
 import android.annotation.SuppressLint
-import android.app.Application
 import androidx.annotation.DrawableRes
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.painterResource
-import com.onesignal.OneSignal
+import gcu.product.base.models.proxy.VpnModel
 import gcu.product.supplevpn.R
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal typealias unitAction = () -> Unit
+internal typealias vpnAction = (item: VpnModel) -> Unit
 
 @SuppressLint("ComposableNaming")
 @Composable
@@ -17,12 +17,6 @@ internal fun @receiver:DrawableRes Int.requireImage() = painterResource(id = thi
 
 internal object FlowSupport {
     inline infix fun <reified T : Any?> MutableStateFlow<T>.set(newState: T) = run { value = newState }
-}
-
-internal fun Application.initOneSignal() {
-    OneSignal.setLogLevel(OneSignal.LOG_LEVEL.VERBOSE, OneSignal.LOG_LEVEL.NONE)
-    OneSignal.initWithContext(this)
-    OneSignal.setAppId(Constants.oneSignalId)
 }
 
 internal fun requireConnectionSpeedSource(speedMs: Int) = when {

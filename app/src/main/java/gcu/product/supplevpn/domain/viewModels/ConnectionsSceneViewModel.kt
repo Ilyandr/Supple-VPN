@@ -1,6 +1,7 @@
 package gcu.product.supplevpn.domain.viewModels
 
 import androidx.lifecycle.viewModelScope
+import coil.ImageLoader
 import coil.request.ImageRequest
 import dagger.hilt.android.lifecycle.HiltViewModel
 import gcu.product.supplevpn.domain.models.ConnectionsSceneModel
@@ -16,7 +17,8 @@ import javax.inject.Inject
 @HiltViewModel
 internal class ConnectionsSceneViewModel @Inject constructor(
     private val connectionUseCase: ConnectionUseCase,
-    val imageRequest: ImageRequest.Builder
+   private val imageRequest: ImageRequest.Builder,
+   private val imageLoader: ImageLoader
 ) : FlowableViewModel<ConnectionsSceneModel>() {
 
     private val mutableStateFlow: MutableStateFlow<ConnectionsSceneModel> by lazy {
@@ -44,8 +46,17 @@ internal class ConnectionsSceneViewModel @Inject constructor(
     override fun setLoadingAction(isLoading: Boolean) =
         mutableStateFlow set ConnectionsSceneModel.LoadingState(isLoading)
 
+    fun requireImageRequest() = this.imageRequest
+
+    fun requireImageLoader() = this.imageLoader
+
     private fun requireProxyList() =
         connectionUseCase.getDefaultProxyList().simpleRequest { response ->
             mutableStateFlow set ConnectionsSceneModel.ProxyListState(response)
         }
+
+
+    companion object {
+        const val SELECTED_VPN_KEY = "selected_vpn_key"
+    }
 }

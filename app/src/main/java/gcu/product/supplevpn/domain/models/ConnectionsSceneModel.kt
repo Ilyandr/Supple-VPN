@@ -9,5 +9,5 @@ internal sealed class ConnectionsSceneModel {
     data class LoadingState(val isLoading: Boolean) : ConnectionsSceneModel()
     object InitState : ConnectionsSceneModel()
     data class FaultState(@StringRes val error: Int) : ConnectionsSceneModel()
-    data class ProxyListState(val list: List<VpnModel>) : ConnectionsSceneModel()
+    data class ProxyListState(val list: Sequence<VpnModel>) : ConnectionsSceneModel()
 }

@@ -3,7 +3,7 @@
 plugins {
     kotlin("android")
     id("com.android.application")
-    id("org.jetbrains.kotlin.kapt")
+    id("kotlin-kapt")
     id("dagger.hilt.android.plugin")
     id("kotlin-parcelize")
 }
@@ -16,14 +16,13 @@ android {
         applicationId = "gcu.product.supplevpn"
         minSdk = 21
         targetSdk = 33
-        versionCode = 2
-        versionName = "1.1"
+        versionCode = 3
+        versionName = "1.2"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
         }
-        buildConfigField("String", "VPN_GATE_API", "\"http://www.vpngate.net/api/iphone/\"")
     }
     buildTypes {
         getByName("release") {
@@ -61,6 +60,7 @@ dependencies {
     implementation(project(":gateway"))
     implementation(project(":usecase"))
     implementation(project(":base"))
+    implementation(project(":engine"))
 
     // Core
     val composeBomVersion = "2022.12.00"
@@ -78,6 +78,7 @@ dependencies {
     val material3Version = "1.0.1"
     val splashVersion = "1.0.0"
     val coilVersion = "2.2.2"
+    implementation("io.coil-kt:coil-svg:$coilVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
     implementation("com.google.accompanist:accompanist-swiperefresh:0.24.13-rc")
     implementation("androidx.constraintlayout:constraintlayout-compose:1.0.1")
@@ -105,14 +106,6 @@ dependencies {
     val hiltVersion = "2.44"
     kapt("com.google.dagger:hilt-android-compiler:$hiltVersion")
     implementation("com.google.dagger:hilt-android:$hiltVersion")
-
-    // Firebase
-    val firebaseBomVersion = "31.1.1"
-    val oneSignalVersion = "4.7.0"
-    platform("com.google.firebase:firebase-bom:$firebaseBomVersion")
-    implementation("com.google.firebase:firebase-analytics:21.2.0")
-    implementation("com.google.firebase:firebase-crashlytics:18.3.2")
-    implementation("com.onesignal:OneSignal:$oneSignalVersion")
 
     // Rest
     val okHttpVersion = "5.0.0-alpha.2"

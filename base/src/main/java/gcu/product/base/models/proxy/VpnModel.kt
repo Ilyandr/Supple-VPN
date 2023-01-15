@@ -2,6 +2,7 @@ package gcu.product.base.models.proxy
 
 import android.os.Parcelable
 import kotlinx.parcelize.Parcelize
+import java.util.Locale
 
 @Parcelize
 data class VpnModel(
@@ -26,9 +27,9 @@ data class VpnModel(
     var isStarred: Boolean = false
 ) : Parcelable {
 
-    fun requireImageHost() = "${FLAGS_API_HOST}$countryShort"
+    fun requireImageHost() = "${FLAGS_API_HOST}${countryShort?.lowercase(Locale.getDefault())}.svg"
 
     companion object {
-        private const val FLAGS_API_HOST = "https://countryflagsapi.com/png/"
+        private const val FLAGS_API_HOST = "https://flagcdn.com/"
     }
 }

@@ -5,5 +5,5 @@ import io.reactivex.rxjava3.core.Single
 
 interface ConnectionGateway {
 
-    fun getDefaultProxyList(): Single<List<VpnModel>>
+    fun getDefaultProxyList(): Single<Sequence<VpnModel>>
 }

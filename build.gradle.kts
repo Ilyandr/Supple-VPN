@@ -1,7 +1,6 @@
 plugins {
     val kotlinVersion = "1.8.0"
-    val gradleVersion = "8.0.0-alpha11"
-
+    val gradleVersion = "7.3.1"
     id("com.android.library").version(gradleVersion).apply(false)
     kotlin("android").version(kotlinVersion).apply(false)
 }

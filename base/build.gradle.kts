@@ -10,7 +10,6 @@ android {
 
     buildTypes {
         release {
-            isMinifyEnabled = false
             @Suppress("UnstableApiUsage")
             proguardFiles(getDefaultProguardFile("proguard-android-optimize.txt"), "proguard-rules.pro")
         }
