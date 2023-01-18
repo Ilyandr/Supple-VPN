@@ -12,12 +12,14 @@ import coil.transform.RoundedCornersTransformation
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
+import dagger.hilt.android.components.ServiceComponent
+import dagger.hilt.android.components.ActivityComponent
 import dagger.hilt.android.components.ViewModelComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import gcu.product.supplevpn.repository.features.utils.Constants
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(ViewModelComponent::class, ServiceComponent::class, ActivityComponent::class)
 internal class FeatureModule {
 
     @Provides
@@ -34,7 +36,7 @@ internal class FeatureModule {
     fun provideImageFlagsRequestBuilder(@ApplicationContext context: Context): ImageRequest.Builder =
         ImageRequest.Builder(context)
             .crossfade(false)
-            .transformations(RoundedCornersTransformation(32f))
+            .transformations(RoundedCornersTransformation(24f))
             .diskCachePolicy(CachePolicy.ENABLED)
             .memoryCachePolicy(CachePolicy.ENABLED)
 

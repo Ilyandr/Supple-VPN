@@ -2,13 +2,11 @@ package gcu.product.supplevpn.presentation.views.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
-import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
@@ -50,11 +48,7 @@ internal inline fun ProxyDefaultItem(
             model = imageRequest.data(item.requireImageHost()).build(),
             placeholder = R.drawable.ic_launcher_foreground.requireImage(),
             contentDescription = null,
-            modifier = Modifier
-                .layoutId("flagImage")
-                .height(64.dp)
-                .width(96.dp)
-                .border(2.dp, color = Color.LightGray, shape = RoundedCornerShape(16))
+            modifier = Modifier.layoutId("flagImage")
         )
 
         DefaultText(modifier = Modifier.layoutId("countryDescription"), text = item.countryShort ?: "Unknown")

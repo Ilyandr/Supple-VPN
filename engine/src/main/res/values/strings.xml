@@ -59,9 +59,11 @@
     <string name="cancel_connection">Отключить</string>
     <string name="cancel_connection_long">Отключить VPN</string>
     <string name="clear_log">clear log</string>
-    <string name="title_cancel">Cancel Confirmation</string>
-    <string name="cancel_connection_query">Disconnect the connected VPN/cancel the connection attempt?</string>
+    <string name="title_cancel">Подключение</string>
+    <string name="cancel_connection_query">Вы действительно хотите разорвать vpn соединение?</string>
     <string name="remove_vpn">Удалить VPN</string>
+    <string name="yes">Да</string>
+    <string name="no">Отмена</string>
     <string name="check_remote_tlscert">Checks whether the server uses a certificate with TLS Server extensions (--remote-cert-tls server)</string>
     <string name="check_remote_tlscert_title">Expect TLS server certificate</string>
     <string name="remote_tlscn_check_summary">Checks the Remote Server Certificate Subject DN</string>
@@ -170,7 +172,7 @@
     <string name="owner_fix">Fix ownership of /dev/tun</string>
     <string name="generated_config_summary">Shows the generated OpenVPN Configuration File</string>
     <string name="edit_profile_title">Editing \"%s\"</string>
-    <string name="building_configration">Building configuration…</string>
+    <string name="building_configration">Сборка конфигурации</string>
     <string name="netchange_summary">Turning this option on will force a reconnect if the network state is changed (e.g. WiFi to/from mobile)</string>
     <string name="netchange">Reconnect on network change</string>
     <string name="netstatus">Network Status: %s</string>

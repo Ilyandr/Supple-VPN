@@ -26,11 +26,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import com.google.accompanist.swiperefresh.SwipeRefresh
+import com.google.accompanist.swiperefresh.SwipeRefreshIndicator
 import com.google.accompanist.swiperefresh.rememberSwipeRefreshState
 import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.R
@@ -100,9 +102,18 @@ internal fun ConnectionsScene(navController: NavController, viewModel: Connectio
                     )
                 })
 
-            SwipeRefresh(state = refreshState, onRefresh = {
-                viewModel.requireProxyList(false)
-            }) {
+            SwipeRefresh(
+                state = refreshState,
+                indicator = { state, trigger ->
+                    SwipeRefreshIndicator(
+                        state = state,
+                        refreshTriggerDistance = trigger,
+                        contentColor = colorResource(id = R.color.primaryColor),
+                    )
+                }, onRefresh = {
+                    refreshState.isRefreshing = true
+                    viewModel.requireProxyList(false)
+                }) {
                 LazyColumn(
                     modifier = Modifier.padding(vertical = 12.dp),
                     verticalArrangement = Arrangement.spacedBy(12.dp),

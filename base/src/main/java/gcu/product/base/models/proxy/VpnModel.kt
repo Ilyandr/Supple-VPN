@@ -1,6 +1,7 @@
 package gcu.product.base.models.proxy
 
 import android.os.Parcelable
+import gcu.product.base.models.proxy.ConnectionEntity.Companion.requireFormatVpnKey
 import kotlinx.parcelize.Parcelize
 import java.util.Locale
 
@@ -27,18 +28,18 @@ data class VpnModel(
     var isStarred: Boolean = false
 ) : Parcelable {
 
-    fun requireImageHost() = "${FLAGS_API_HOST}${countryShort?.lowercase(Locale.getDefault())}.svg"
-
     fun mapToConnectionEntity() = ConnectionEntity(
+        key = ovpnConfigData!!.requireFormatVpnKey(),
         isDefaultServer = type is VpnTypeModel.Default,
         countryLong = countryLong,
         countryShort = countryShort,
-        ovpnConfigData = ovpnConfigData,
+        ovpnConfigData = ovpnConfigData!!,
         ping = ping,
         protocol = protocol
     )
 
     companion object {
+
         const val FLAGS_API_HOST = "https://flagcdn.com/"
 
         internal enum class ConnectionStatus {

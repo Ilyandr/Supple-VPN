@@ -9,11 +9,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Switch
+import androidx.compose.material.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
@@ -26,7 +28,6 @@ internal inline fun ApplicationItem(
     item: ApplicationEntity?,
     crossinline changeCallback: (ApplicationEntity) -> Unit
 ) {
-
     if (item == null || item.name.isEmpty() || item.imagePath.isNullOrEmpty()) return
     val checkedState = remember { mutableStateOf(item.isEnabled) }
 
@@ -44,11 +45,14 @@ internal inline fun ApplicationItem(
         DefaultText(text = item.name)
         Spacer(modifier = Modifier.width(12.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-            Switch(checked = checkedState.value, onCheckedChange = { isEnabled ->
-                item.isEnabled = isEnabled
-                changeCallback.invoke(item)
-                checkedState.value = isEnabled
-            })
+            Switch(
+                checked = checkedState.value,
+                colors = SwitchDefaults.colors(Color.White),
+                onCheckedChange = { isEnabled ->
+                    item.isEnabled = isEnabled
+                    changeCallback.invoke(item)
+                    checkedState.value = isEnabled
+                })
         }
     }
 }

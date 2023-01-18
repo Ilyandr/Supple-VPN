@@ -12,4 +12,12 @@
     <string name="message_unknown_exception">Неизвестная ошибка</string>
     <string name="description_connection_list">Список серверов</string>
     <string name="text_server_none_selected">Сервер не выбран</string>
+
+    <!--vpn notification service-->
+    <string name="header_clever_vpn">Умный режим</string>
+    <string name="title_offline_vpn">VPN не подключён</string>
+    <string name="title_loading_vpn">Установка подключения..</string>
+    <string name="title_online_vpn">VPN подключён</string>
+    <string name="text_description_auto_vpn">Умный режим</string>
+
 </resources>

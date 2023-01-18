@@ -44,6 +44,7 @@ import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
@@ -95,6 +96,8 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     private static final int PRIORITY_MAX = 2;
     private static boolean mNotificationAlwaysVisible = false;
     private static Class<? extends Activity> mNotificationActivityClass;
+    @Nullable
+    public static OpenVPNManagement vpnManagmentInstance;
     private final Vector<String> mDnslist = new Vector<>();
     private final NetworkSpace mRoutes = new NetworkSpace();
     private final NetworkSpace mRoutesv6 = new NetworkSpace();
@@ -409,6 +412,7 @@ public class OpenVPNService extends VpnService implements StateListener, Callbac
     @RequiresApi(api = Build.VERSION_CODES.JELLY_BEAN)
     private void addVpnActionsToNotification(Notification.Builder nbuilder) {
         Intent disconnectVPN = new Intent(this, DisconnectVPNActivity.class);
+        vpnManagmentInstance = OpenVPNService.this.getManagement();
         disconnectVPN.setAction(DISCONNECT_VPN);
         PendingIntent disconnectPendingIntent = PendingIntent.getActivity(this, 0, disconnectVPN, PendingIntent.FLAG_IMMUTABLE | PendingIntent.FLAG_UPDATE_CURRENT);
 

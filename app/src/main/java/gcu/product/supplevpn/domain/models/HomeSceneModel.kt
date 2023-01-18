@@ -3,6 +3,7 @@ package gcu.product.supplevpn.domain.models
 
 import gcu.product.base.models.apps.ApplicationEntity
 import gcu.product.base.models.apps.ConnectionStatus
+import gcu.product.base.models.proxy.ConnectionEntity
 
 internal sealed class HomeSceneModel {
 
@@ -12,5 +13,8 @@ internal sealed class HomeSceneModel {
 
     data class ConnectionStatusState(val status: ConnectionStatus) : HomeSceneModel()
 
-    data class InitPageState(val data: List<ApplicationEntity?>) : HomeSceneModel()
+    data class InitPageState(
+        val data: List<ApplicationEntity?>,
+        val currentModel: ConnectionEntity? = null,
+    ) : HomeSceneModel()
 }

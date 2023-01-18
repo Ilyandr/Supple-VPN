@@ -378,6 +378,7 @@ string mtu_invalid_value
 string netchange
 string netchange_summary
 string netstatus
+string no
 string no_allowed_app
 string no_bind
 string no_ca_cert_selected
@@ -596,6 +597,7 @@ string vpnselected
 string warn_no_dns
 string weakmd
 string weakmd_title
+string yes
 style blinkt
 style blinkt_baseTheme
 style blinkt_dialog

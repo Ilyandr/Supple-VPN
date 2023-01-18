@@ -1,20 +1,25 @@
 package gcu.product.supplevpn.repository.features.utils
 
 import android.annotation.SuppressLint
+import android.app.ActivityManager
+import android.app.AppOpsManager
+import android.app.usage.UsageStats
 import android.app.usage.UsageStatsManager
 import android.content.Context
+import android.content.Context.ACTIVITY_SERVICE
+import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
 import android.os.Build
-import android.util.Log
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.core.content.ContextCompat
 import de.blinkt.openvpn.OpenVpnApi
-import gcu.product.gateway.Constants.VPN_API_LOGIN
-import gcu.product.gateway.Constants.VPN_API_PASSWORD
 import gcu.product.base.models.apps.ApplicationEntity
 import gcu.product.base.models.proxy.ConnectionEntity
+import gcu.product.gateway.Constants.VPN_API_LOGIN
+import gcu.product.gateway.Constants.VPN_API_PASSWORD
 import gcu.product.usecase.database.applications.ApplicationsUseCase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
@@ -25,6 +30,8 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.SortedMap
+import java.util.TreeMap
 
 
 internal object Utils {
@@ -67,31 +74,42 @@ internal object Utils {
             }
         }
 
-    internal infix fun Context.launchVpnService(item: ConnectionEntity?) = item?.run {
+    fun Context.launchVpnService(item: ConnectionEntity?, action: (Intent) -> Unit = {}) = item?.run {
         OpenVpnApi.startVpn(
             this@launchVpnService,
             ovpnConfigData,
             countryShort,
             VPN_API_LOGIN,
-            VPN_API_PASSWORD
+            VPN_API_PASSWORD,
+            action
         )
     }
 
-    internal fun Context.requireLaunchedApps() {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.LOLLIPOP_MR1) return
-        val mUsageStatsManager = getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager
-        val currentTime = System.currentTimeMillis()
-        val stats =
-            mUsageStatsManager.queryUsageStats(UsageStatsManager.INTERVAL_DAILY, currentTime - 1000 * 10, currentTime)
-        if (stats != null) {
-            var lastUsedAppTime: Long = 0
-            for (usageStats in stats) {
-                if (usageStats.lastTimeUsed > lastUsedAppTime) {
-                    Log.e("data", usageStats.packageName)
-                    lastUsedAppTime = usageStats.lastTimeUsed
+    fun Context.requireCurrentTask(): String? {
+        var currentApp: String? = null
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
+            val time = System.currentTimeMillis()
+            val appList = (getSystemService(Context.USAGE_STATS_SERVICE) as UsageStatsManager).queryUsageStats(
+                UsageStatsManager.INTERVAL_DAILY,
+                time - 1000 * 1000,
+                time
+            )
+            if (appList != null && appList.isNotEmpty()) {
+                val mySortedMap: SortedMap<Long, UsageStats> = TreeMap()
+                for (usageStats in appList) {
+                    mySortedMap[usageStats.lastTimeUsed] = usageStats
+                }
+                if (!mySortedMap.isEmpty()) {
+                    currentApp = mySortedMap[mySortedMap.lastKey()]?.packageName
                 }
             }
+        } else {
+            currentApp = (getSystemService(ACTIVITY_SERVICE) as ActivityManager)
+                .runningAppProcesses
+                .first()
+                .processName
         }
+        return currentApp
     }
 
     @SuppressLint("CheckResult")
@@ -114,9 +132,23 @@ internal object Utils {
             .subscribe({ successAction.invoke() }, { error -> faultAction?.invoke(error) })
     }
 
-    internal infix fun Context.showToast(@StringRes messageId: Int) =
+    infix fun Context.showToast(@StringRes messageId: Int) =
         Toast.makeText(this, messageId, Toast.LENGTH_SHORT).show()
 
-    internal inline fun CoroutineScope.actionWithDelay(delay: Long = 500L, crossinline action: unitAction) =
+    inline fun CoroutineScope.actionWithDelay(delay: Long = 500L, crossinline action: unitAction) =
         launch(Dispatchers.IO) { delay(delay); withContext(Dispatchers.Main) { action.invoke() } }
+
+    infix fun Context.checkGrantedPermission(permission: String) =
+        ContextCompat.checkSelfPermission(this, permission) == PackageManager.PERMISSION_GRANTED
+
+    @Suppress("DEPRECATION")
+    fun Context.isStatAccessPermissionSet() = try {
+        packageManager.getApplicationInfo(packageName, 0).run {
+            (getSystemService(Context.APP_OPS_SERVICE) as AppOpsManager).checkOpNoThrow(
+                AppOpsManager.OPSTR_GET_USAGE_STATS, uid, packageName
+            ) == AppOpsManager.MODE_ALLOWED
+        }
+    } catch (e: Exception) {
+        false
+    }
 }

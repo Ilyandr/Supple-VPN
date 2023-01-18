@@ -9,6 +9,7 @@ import gcu.product.supplevpn.R
 import kotlinx.coroutines.flow.MutableStateFlow
 
 internal typealias unitAction = () -> Unit
+internal typealias booleanAction = (Boolean) -> Unit
 internal typealias vpnAction = (item: ConnectionEntity) -> Unit
 
 @SuppressLint("ComposableNaming")

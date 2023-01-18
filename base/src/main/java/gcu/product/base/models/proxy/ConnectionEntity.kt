@@ -13,11 +13,11 @@ import java.util.Locale
 @Entity(tableName = Constants.CONNECTIONS_ENTITY_NAME)
 @Parcelize
 data class ConnectionEntity(
-    @PrimaryKey(autoGenerate = true) val id: Long = 0,
+    @PrimaryKey val key: String,
+    @ColumnInfo("ssh") var ovpnConfigData: String,
     @ColumnInfo("type") val isDefaultServer: Boolean,
     @ColumnInfo("country_long") val countryLong: String? = null,
     @ColumnInfo("country_short") var countryShort: String? = null,
-    @ColumnInfo("ssh") var ovpnConfigData: String? = null,
     @ColumnInfo("ping") var ping: String? = null,
     @ColumnInfo("protocol") var protocol: String? = null,
 ) : Parcelable {
@@ -28,4 +28,10 @@ data class ConnectionEntity(
     }
 
     fun requireImageHost() = "$FLAGS_API_HOST${countryShort?.lowercase(Locale.getDefault())}.svg"
+
+    fun requireFormatKey() = ovpnConfigData.replaceFirst("remote", "").split("remote")[1].split("#")[0].trim()
+
+    companion object {
+        fun String.requireFormatVpnKey() = replaceFirst("remote", "").split("remote")[1].split("#")[0].trim()
+    }
 }

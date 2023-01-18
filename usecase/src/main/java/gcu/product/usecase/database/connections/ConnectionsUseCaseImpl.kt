@@ -10,4 +10,6 @@ class ConnectionsUseCaseImpl(private val database: ConnectionsDatabase) : Connec
     override fun requireConnections() = database.requireConnectionsDao().requireConnections()
 
     override fun removeDatabase() = database.requireConnectionsDao().removeDatabase()
+
+    override fun requireModel(key: String) = database.requireConnectionsDao().requireModel(key)
 }

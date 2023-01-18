@@ -1,6 +1,7 @@
 package de.blinkt.openvpn
 
 import android.content.Context
+import android.content.Intent
 import android.os.RemoteException
 import de.blinkt.openvpn.core.ConfigParser
 import de.blinkt.openvpn.core.ConfigParser.ConfigParseError
@@ -13,11 +14,25 @@ object OpenVpnApi {
 
     private const val TAG = "OpenVpnApi"
 
-    fun startVpn(context: Context, inlineConfig: String?, sCountry: String?, userName: String?, pw: String?) =
-        startVpnInternal(context, inlineConfig, sCountry, userName, pw)
+    fun startVpn(
+        context: Context,
+        inlineConfig: String?,
+        sCountry: String?,
+        userName: String?,
+        pw: String?,
+        action: (Intent) -> Unit
+    ) =
+        startVpnInternal(context, inlineConfig, sCountry, userName, pw, action)
 
     @Throws(RemoteException::class)
-    fun startVpnInternal(context: Context, inlineConfig: String?, sCountry: String?, userName: String?, pw: String?) {
+    inline fun startVpnInternal(
+        context: Context,
+        inlineConfig: String?,
+        sCountry: String?,
+        userName: String?,
+        pw: String?,
+        action: (Intent) -> Unit
+    ) {
         val cp = ConfigParser()
         try {
             cp.parseConfig(StringReader(inlineConfig))
@@ -31,6 +46,7 @@ object OpenVpnApi {
             vp.mPassword = pw
             ProfileManager.setTemporaryProfile(context, vp)
             VPNLaunchHelper.startOpenVpn(vp, context)
+            action.invoke(vp.prepareStartService(context))
         } catch (e: IOException) {
             throw RemoteException(e.message)
         } catch (e: ConfigParseError) {

@@ -154,13 +154,13 @@
     <string name="broken_image_cert_title">Error showing certificate selection</string>
     <string name="broken_images">Broken Images</string>
     <string name="broken_images_faq">&lt;p>Official HTC images are known to have a strange routing problem causing traffic not to flow through the tunnel (See also &lt;a href="https://github.com/schwabe/ics-openvpn/issues/18">Issue 18&lt;/a> in the bug tracker.)&lt;/p>&lt;p>Older official SONY images from Xperia Arc S and Xperia Ray have been reported to be missing the VPNService completely from the image. (See also &lt;a href="https://github.com/schwabe/ics-openvpn/issues/29">Issue 29&lt;/a> in the bug tracker.)&lt;/p>&lt;p>On custom build images the tun module might be missing or the rights of /dev/tun might be wrong. Some CM9 images need the "Fix ownership" option under "Device specific hacks" enabled.&lt;/p>&lt;p>Most importantly: If your device has a broken Android image, report it to your vendor. The more people who report an issue to the vendor, the more likely they are to fix it.&lt;/p></string>
-    <string name="building_configration">Building configuration…</string>
+    <string name="building_configration">Сборка конфигурации</string>
     <string name="built_by">built by %s</string>
     <string name="ca_title">CA Certificate</string>
     <string name="cancel">Cancel</string>
     <string name="cancel_connection">Отключить</string>
     <string name="cancel_connection_long">Отключить VPN</string>
-    <string name="cancel_connection_query">Disconnect the connected VPN/cancel the connection attempt?</string>
+    <string name="cancel_connection_query">Вы действительно хотите разорвать vpn соединение?</string>
     <string name="cannotparsecert">Cannot display certificate information</string>
     <string name="cant_read_folder">Unable to read directory</string>
     <string name="change_sorting">Change sorting</string>
@@ -396,6 +396,7 @@
     <string name="netchange">Reconnect on network change</string>
     <string name="netchange_summary">Turning this option on will force a reconnect if the network state is changed (e.g. WiFi to/from mobile)</string>
     <string name="netstatus">Network Status: %s</string>
+    <string name="no">Отмена</string>
     <string name="no_allowed_app">No allowed app added. Adding ourselves (%s) to have at least one app in the allowed app list to not allow all apps</string>
     <string name="no_bind">No local binding</string>
     <string name="no_ca_cert_selected">You must select a CA certificate</string>
@@ -568,7 +569,7 @@
     <string name="timestamps_none">None</string>
     <string name="title_activity_open_sslspeed">OpenSSL Speed Test</string>
     <string name="title_block_address_families">Block IPv6 (or IPv4) if not used by the VPN</string>
-    <string name="title_cancel">Cancel Confirmation</string>
+    <string name="title_cancel">Подключение</string>
     <string name="tls_auth_file">TLS Auth File</string>
     <string name="tls_authentication">TLS Authentication/Encryption</string>
     <string name="tls_cipher_alert">Newer OpenVPN for Android versions (0.6.29/March 2015) use a more secure default for the allowed cipher suites (tls-cipher \"DEFAULT:!EXP:!PSK:!SRP:!kRSA\"). Unfortunately, omitting the less secure cipher suites and export cipher suites, especially the omission of cipher suites that do not support Perfect Forward Secrecy (Diffie-Hellman) causes some problems. This usually caused by an well-intentioned but poorly executed attempt to strengthen TLS security by setting tls-cipher on the server or some embedded OSes with stripped down SSL (e.g. MikroTik).\nTo solve this problem the problem, set the tls-cipher settings on the server to reasonable default like tls-cipher \"DEFAULT:!EXP:!PSK:!SRP:!kRSA\". To work around the problem on the client add the custom option tls-cipher DEFAULT on the Android client.</string>
@@ -627,6 +628,7 @@
         imported configuration&lt;/p>
     </string>
     <string name="weakmd_title">Weak (MD5) hashes in certificate signature (SSL_CTX_use_certificate md too weak)</string>
+    <string name="yes">Да</string>
     <style name="blinkt" parent="blinkt.baseTheme"/>
     <style name="blinkt.baseTheme" parent="android:Theme.DeviceDefault.Light"/>
     <style name="blinkt.dialog" parent="android:Theme.DeviceDefault.Light.Dialog"/>

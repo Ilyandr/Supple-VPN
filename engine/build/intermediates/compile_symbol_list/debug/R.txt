@@ -377,6 +377,7 @@ int string mtu_invalid_value 0x0
 int string netchange 0x0
 int string netchange_summary 0x0
 int string netstatus 0x0
+int string no 0x0
 int string no_allowed_app 0x0
 int string no_bind 0x0
 int string no_ca_cert_selected 0x0
@@ -595,6 +596,7 @@ int string vpnselected 0x0
 int string warn_no_dns 0x0
 int string weakmd 0x0
 int string weakmd_title 0x0
+int string yes 0x0
 int style blinkt 0x0
 int style blinkt_baseTheme 0x0
 int style blinkt_dialog 0x0

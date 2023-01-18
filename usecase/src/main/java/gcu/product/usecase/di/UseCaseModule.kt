@@ -7,6 +7,7 @@ import dagger.Provides
 import dagger.Reusable
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import dagger.hilt.android.components.ServiceComponent
 import dagger.hilt.android.qualifiers.ApplicationContext
 import gcu.product.gateway.Constants.APPLICATIONS_DATABASE_KEY
 import gcu.product.gateway.Constants.CONNECTIONS_DATABASE_KEY
@@ -21,7 +22,7 @@ import gcu.product.usecase.network.connections.VpnUseCase
 import gcu.product.usecase.network.connections.VpnUseCaseImpl
 
 @Module
-@InstallIn(ViewModelComponent::class)
+@InstallIn(ViewModelComponent::class, ServiceComponent::class)
 class UseCaseModule {
 
     @Provides

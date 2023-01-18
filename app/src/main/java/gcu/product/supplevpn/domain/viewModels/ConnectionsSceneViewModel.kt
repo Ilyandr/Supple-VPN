@@ -61,7 +61,8 @@ internal class ConnectionsSceneViewModel @Inject constructor(
             } else {
                 vpnUseCase.getDefaultProxyList().simpleRequest { responseList ->
                     mutableStateFlow set ConnectionsSceneModel.ProxyListState(responseList)
-                    responseList.forEach { item -> connectionsUseCase.insert(item).simpleRequest() }
+                    responseList.forEach { item -> 
+                        connectionsUseCase.insert(item).simpleRequest() }
                 }
             }
         }

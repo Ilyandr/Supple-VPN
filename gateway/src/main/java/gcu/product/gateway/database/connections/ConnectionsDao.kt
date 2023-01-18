@@ -22,4 +22,8 @@ interface ConnectionsDao {
     @Transaction
     @Query("DELETE FROM $CONNECTIONS_ENTITY_NAME")
     fun removeDatabase(): Completable
+
+    @Transaction
+    @Query("SELECT * FROM $CONNECTIONS_ENTITY_NAME WHERE `key` LIKE :key")
+    fun requireModel(key: String): Single<ConnectionEntity>
 }

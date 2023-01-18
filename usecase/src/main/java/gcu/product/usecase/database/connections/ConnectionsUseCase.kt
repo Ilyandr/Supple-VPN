@@ -11,4 +11,6 @@ interface ConnectionsUseCase {
     fun requireConnections(): Single<List<ConnectionEntity>>
 
     fun removeDatabase(): Completable
+
+    fun requireModel(key: String): Single<ConnectionEntity>
 }
