@@ -1,6 +1,6 @@
 # Supple-VPN 
 
-VPN project. Powered by: jetpack compose, MVVM, retrofit 2, rxJava3, hilt di, notifications.
+VPN project. Powered by: jetpack compose, MVVM, retrofit 2, rxJava3, hilt di, foreground services.
 
 ------------------
 The project is under development. Work is underway on the implementation of: a list of available servers, optional advertising and background operation of the application (priority).
