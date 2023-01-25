@@ -41,7 +41,7 @@ import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel
 import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel.Companion.SELECTED_VPN_KEY
 import gcu.product.supplevpn.presentation.views.items.BaseHeaderItem
 import gcu.product.supplevpn.presentation.views.items.ProxyDefaultItem
-import gcu.product.supplevpn.presentation.views.text.DefaultText
+import gcu.product.supplevpn.presentation.views.other.DefaultText
 import gcu.product.supplevpn.repository.features.utils.Utils.showToast
 import gcu.product.supplevpn.repository.features.utils.requireImage
 

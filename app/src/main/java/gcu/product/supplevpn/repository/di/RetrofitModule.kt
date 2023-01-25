@@ -6,10 +6,13 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
+import gcu.product.gateway.Constants.PAYMENTS_HOST
 import gcu.product.gateway.Constants.VPN_API_HOST
 import gcu.product.supplevpn.repository.features.utils.Constants.DEFAULT_REST_TIMEOUT
 import gcu.product.supplevpn.repository.features.utils.Constants.RETROFIT_DEFAULT
+import gcu.product.supplevpn.repository.features.utils.Constants.RETROFIT_PAYMENTS
 import okhttp3.OkHttpClient
+import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.CallAdapter
 import retrofit2.Converter
 import retrofit2.Retrofit
@@ -29,6 +32,7 @@ class RetrofitModule {
         .readTimeout(DEFAULT_REST_TIMEOUT, TimeUnit.SECONDS)
         .callTimeout(DEFAULT_REST_TIMEOUT, TimeUnit.SECONDS)
         .writeTimeout(DEFAULT_REST_TIMEOUT, TimeUnit.SECONDS)
+        .addInterceptor(HttpLoggingInterceptor().setLevel(HttpLoggingInterceptor.Level.BODY))
         .build()
 
     @Provides
@@ -56,5 +60,18 @@ class RetrofitModule {
         .client(client)
         .addCallAdapterFactory(callAdapterFactory)
         .addConverterFactory(converterScalarsFactory)
+        .build()
+
+    @Provides
+    @Named(RETROFIT_PAYMENTS)
+    fun providePaymentsRetrofit(
+        callAdapterFactory: CallAdapter.Factory,
+        @Named("gsonFactory") converterGsonFactory: Converter.Factory,
+        client: OkHttpClient
+    ): Retrofit = Retrofit.Builder()
+        .baseUrl(PAYMENTS_HOST)
+        .client(client)
+        .addCallAdapterFactory(callAdapterFactory)
+        .addConverterFactory(converterGsonFactory)
         .build()
 }

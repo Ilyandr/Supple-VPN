@@ -11,12 +11,12 @@ import android.content.IntentFilter
 import android.content.SharedPreferences
 import android.os.Binder
 import android.os.Build
-import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import dagger.hilt.android.AndroidEntryPoint
-import de.blinkt.openvpn.core.OpenVPNService.vpnManagmentInstance
+import de.blinkt.openvpn.core.OpenVPNService
+import de.blinkt.openvpn.core.OpenVPNService.engineVpnInstance
 import gcu.product.base.models.apps.ConnectionStatus
 import gcu.product.base.models.apps.mapToConnectionStatus
 import gcu.product.supplevpn.R
@@ -25,7 +25,7 @@ import gcu.product.supplevpn.repository.features.utils.Constants.CURRENT_CONNECT
 import gcu.product.supplevpn.repository.features.utils.Utils.launchVpnService
 import gcu.product.supplevpn.repository.features.utils.Utils.requireCurrentTask
 import gcu.product.supplevpn.repository.features.utils.Utils.singleRequest
-import gcu.product.supplevpn.repository.source.architecture.other.ConnectionStateSource
+import gcu.product.supplevpn.repository.source.callback.ConnectionCallback
 import gcu.product.usecase.database.applications.ApplicationsUseCase
 import gcu.product.usecase.database.connections.ConnectionsUseCase
 import java.util.concurrent.Executors
@@ -34,7 +34,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-internal class AutoVpnService : Service(), ConnectionStateSource {
+internal class AutoVpnService : Service(), ConnectionCallback {
 
     @Inject
     lateinit var applicationsUseCase: ApplicationsUseCase
@@ -59,7 +59,6 @@ internal class AutoVpnService : Service(), ConnectionStateSource {
     }
     private var isVpnServiceEnabled = false
     private var notificationManager: NotificationManager? = null
-    private var currentLaunchedApp: String? = null
     private var vpnServiceIntent: Intent? = null
 
 
@@ -70,11 +69,10 @@ internal class AutoVpnService : Service(), ConnectionStateSource {
             Constants.START_SERVICE -> {
                 isAutoVpnServiceEnabled = true
                 registerReceiver(connectionReceiver, connectionReceiverIntent)
+                OpenVPNService.lastVpnStatus?.run { setConnectionStatus(this) }
             }
 
             Constants.STOP_SERVICE -> {
-                vpnManagmentInstance?.stopVPN(false)
-                vpnManagmentInstance = null
                 isAutoVpnServiceEnabled = false
                 @Suppress("DEPRECATION") stopForeground(true)
                 stopSelfResult(startId)
@@ -137,34 +135,30 @@ internal class AutoVpnService : Service(), ConnectionStateSource {
         return CHANNEL_ID
     }
 
-    private fun setLaunchedAppsListener() =
+    private fun setLaunchedAppsListener() {
         executor.scheduleAtFixedRate({
             with(baseContext.requireCurrentTask()) {
-                if (validateLaunchedApp(this)) {
-                    applicationsUseCase.requireApps().singleRequest { selectedApps ->
-                        if (selectedApps.isNotEmpty()) {
-                            diffLaunchedApps(
-                                this ?: return@singleRequest,
-                                selectedApps.filter { it.isEnabled }.map { it.imagePath!! }
-                            )
-                        }
+                applicationsUseCase.requireApps().singleRequest { selectedApps ->
+                    if (selectedApps.isNotEmpty()) {
+                        diffLaunchedApps(
+                            this ?: return@singleRequest,
+                            selectedApps.filter { it.isEnabled }.map { it.imagePath!! }
+                        )
                     }
                 }
             }
         }, 2000, 1000, TimeUnit.MILLISECONDS)
-
-    private fun diffLaunchedApps(launchedApp: String, selectedApps: List<String>) {
-        if (selectedApps.contains(launchedApp) && !isVpnServiceEnabled) {
-            vpnServiceAction(true)
-            currentLaunchedApp = launchedApp
-        }
     }
 
-    private fun validateLaunchedApp(data: String?) =
-        if (isVpnServiceEnabled && data != currentLaunchedApp && !data.isNullOrEmpty()) {
+    private fun diffLaunchedApps(launchedApp: String, selectedApps: List<String>) {
+        if ((selectedApps.contains(launchedApp)) && !isVpnServiceEnabled && launchedApp != Constants.APPLICATION_PATH) {
+            vpnServiceAction(true)
+        } else if (!selectedApps.contains(launchedApp) && launchedApp != Constants.APPLICATION_PATH) {
+            engineVpnInstance?.stopVPN(false)
+            engineVpnInstance = null
             vpnServiceAction(false)
-            false
-        } else true
+        }
+    }
 
     private fun vpnServiceAction(isEnabled: Boolean) {
         isVpnServiceEnabled = isEnabled
@@ -176,9 +170,6 @@ internal class AutoVpnService : Service(), ConnectionStateSource {
                     }
                 }
             }
-        } else {
-            vpnManagmentInstance?.stopVPN(false)
-            vpnManagmentInstance = null
         }
     }
 

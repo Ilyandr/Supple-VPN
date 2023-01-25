@@ -1,8 +1,9 @@
-package gcu.product.supplevpn.presentation.views.text
+package gcu.product.supplevpn.presentation.views.other
 
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontStyle
@@ -14,15 +15,19 @@ import gcu.product.supplevpn.R
 
 @Composable
 internal fun DefaultText(
-    text: String, modifier: Modifier = Modifier, fontSize: TextUnit = 23.sp,
+    text: String,
+    modifier: Modifier = Modifier,
+    fontSize: TextUnit = 21.sp,
+    singleLine: Boolean = true,
+    textColor: Color = Color.White
 ) = Text(
     text = text,
     modifier = modifier,
     textAlign = TextAlign.Center,
     fontStyle = FontStyle(R.font.sf_medium),
     fontSize = fontSize,
-    color = colorResource(id = R.color.white),
-    maxLines = 1,
+    color = textColor,
+    maxLines = if (singleLine) 1 else 100,
     overflow = TextOverflow.Ellipsis
 )
 

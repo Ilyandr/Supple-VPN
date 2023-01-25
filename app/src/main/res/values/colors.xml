@@ -13,7 +13,10 @@
     <color name="grayTransparent">#3D959595</color>
     <color name="red">#E53935</color>
     <color name="green_low">#558B2F</color>
+    <color name="gray">#292929</color>
+    <color name="blackBlue">#141c27</color>
     <color name="green">#388E3C</color>
+    <color name="selectedColor">#1E88E5</color>
     <color name="yellow">#FBC02D</color>
     <color name="yellow_low">#F57C00</color>
 </resources>

@@ -36,8 +36,6 @@ dependencies {
 
     // Core
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
 
     // Room
     val roomVersion = "2.5.0"
@@ -47,6 +45,8 @@ dependencies {
 
     // Rest
     val okHttpVersion = "5.0.0-alpha.2"
+    val retrofitVersion = "2.9.0"
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
 
     //  DI

@@ -17,7 +17,7 @@ android {
         minSdk = 21
         targetSdk = 33
         versionCode = 3
-        versionName = "1.2"
+        versionName = "1.2.7"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -79,6 +79,7 @@ dependencies {
     val splashVersion = "1.0.0"
     val coilVersion = "2.2.2"
     val swipeRefreshVersion = "0.24.13-rc"
+    val webkitVersion = "1.5.0"
     implementation("io.coil-kt:coil-svg:$coilVersion")
     implementation("io.coil-kt:coil-compose:$coilVersion")
     implementation("com.google.accompanist:accompanist-swiperefresh:$swipeRefreshVersion")
@@ -89,6 +90,7 @@ dependencies {
     implementation("androidx.compose.ui:ui-graphics:$composeVersion")
     implementation("androidx.compose.material3:material3:$material3Version")
     implementation("androidx.compose.material:material:$materialVersion")
+    implementation("androidx.webkit:webkit:$webkitVersion")
     implementation("com.github.SimformSolutionsPvtLtd:SSJetPackComposeProgressButton:1.0.7")
 
     // Navigation
@@ -123,4 +125,7 @@ dependencies {
     implementation("io.reactivex.rxjava3:rxjava:$rxJavaVersion")
     implementation("io.reactivex.rxjava3:rxandroid:$rxAndroidVersion")
 
+    // Other
+    val yookassaVersion = "6.5.3"
+    implementation("ru.yoomoney.sdk.kassa.payments:yookassa-android-sdk:$yookassaVersion")
 }

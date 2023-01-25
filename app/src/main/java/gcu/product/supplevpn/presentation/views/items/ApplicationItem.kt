@@ -19,7 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.unit.dp
 import androidx.core.graphics.drawable.toBitmap
-import gcu.product.supplevpn.presentation.views.text.DefaultText
+import gcu.product.supplevpn.presentation.views.other.DefaultText
 import gcu.product.base.models.apps.ApplicationEntity
 
 @Composable

@@ -14,12 +14,15 @@ import gcu.product.gateway.Constants.CONNECTIONS_DATABASE_KEY
 import gcu.product.gateway.database.applications.ApplicationsDatabase
 import gcu.product.gateway.database.connections.ConnectionsDatabase
 import gcu.product.gateway.network.connections.VpnGateway
+import gcu.product.gateway.network.payments.PaymentsGateway
 import gcu.product.usecase.database.applications.ApplicationsUseCaseImpl
 import gcu.product.usecase.database.applications.ApplicationsUseCase
 import gcu.product.usecase.database.connections.ConnectionsUseCase
 import gcu.product.usecase.database.connections.ConnectionsUseCaseImpl
 import gcu.product.usecase.network.connections.VpnUseCase
 import gcu.product.usecase.network.connections.VpnUseCaseImpl
+import gcu.product.usecase.network.payments.PaymentsUseCase
+import gcu.product.usecase.network.payments.PaymentsUseCaseImpl
 
 @Module
 @InstallIn(ViewModelComponent::class, ServiceComponent::class)
@@ -32,6 +35,11 @@ class UseCaseModule {
     @Provides
     fun provideConnectionsSource(database: ConnectionsDatabase): ConnectionsUseCase =
         ConnectionsUseCaseImpl(database)
+
+    @Provides
+    @Reusable
+    fun providePaymentsSource(gateway: PaymentsGateway): PaymentsUseCase =
+        PaymentsUseCaseImpl(gateway)
 
     @Provides
     @Reusable

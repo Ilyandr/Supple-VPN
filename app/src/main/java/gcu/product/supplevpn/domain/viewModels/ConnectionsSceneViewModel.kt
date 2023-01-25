@@ -44,7 +44,7 @@ internal class ConnectionsSceneViewModel @Inject constructor(
 
     override fun actionReady() = mutableStateFlow set ConnectionsSceneModel.DefaultState
 
-    override fun faultAction(error: Throwable) =
+    override fun setFaultAction(error: Throwable) =
         mutableStateFlow set ConnectionsSceneModel.FaultState(handleError(error))
 
     override fun setLoadingAction(isLoading: Boolean) =
@@ -61,8 +61,7 @@ internal class ConnectionsSceneViewModel @Inject constructor(
             } else {
                 vpnUseCase.getDefaultProxyList().simpleRequest { responseList ->
                     mutableStateFlow set ConnectionsSceneModel.ProxyListState(responseList)
-                    responseList.forEach { item -> 
-                        connectionsUseCase.insert(item).simpleRequest() }
+                    responseList.forEach { item -> connectionsUseCase.insert(item).simpleRequest() }
                 }
             }
         }

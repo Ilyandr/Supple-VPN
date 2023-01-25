@@ -1,7 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?> <!--
-  ~ Copyright (c) 2012-2016 Arne Schwabe
-  ~ Distributed under the GNU GPL v2 with additional terms. For full terms see the file doc/LICENSE.txt
-  -->
+<?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app">OpenVPN for Android</string>
     <string name="address">Server Address:</string>
@@ -56,15 +53,13 @@
     <string name="custom_config_title">Enable Custom Options</string>
     <string name="custom_config_summary">Specify custom options. Use with care!</string>
     <string name="route_rejected">Route rejected by Android</string>
-    <string name="cancel_connection">Отключить</string>
-    <string name="cancel_connection_long">Отключить VPN</string>
+    <string name="cancel_connection">Disconnect</string>
+    <string name="cancel_connection_long">Disconnect VPN</string>
     <string name="clear_log">clear log</string>
-    <string name="title_cancel">Подключение</string>
-    <string name="cancel_connection_query">Вы действительно хотите разорвать vpn соединение?</string>
-    <string name="remove_vpn">Удалить VPN</string>
-    <string name="yes">Да</string>
-    <string name="no">Отмена</string>
-    <string name="check_remote_tlscert">Checks whether the server uses a certificate with TLS Server extensions (--remote-cert-tls server)</string>
+    <string name="title_cancel" translatable="false">Cancel Confirmation</string>
+    <string name="cancel_connection_query" translatable="false">Disconnect the connected VPN/cancel the connection attempt?</string>
+    <string name="remove_vpn">Remove VPN</string>
+    <string name="check_remote_tlscert">Checks whether the server uses a certificate with TLS Server extensions (—remote-cert-tls server)</string>
     <string name="check_remote_tlscert_title">Expect TLS server certificate</string>
     <string name="remote_tlscn_check_summary">Checks the Remote Server Certificate Subject DN</string>
     <string name="remote_tlscn_check_title">Certificate Hostname Check</string>
@@ -172,7 +167,7 @@
     <string name="owner_fix">Fix ownership of /dev/tun</string>
     <string name="generated_config_summary">Shows the generated OpenVPN Configuration File</string>
     <string name="edit_profile_title">Editing \"%s\"</string>
-    <string name="building_configration">Сборка конфигурации</string>
+    <string name="building_configration">Building configuration…</string>
     <string name="netchange_summary">Turning this option on will force a reconnect if the network state is changed (e.g. WiFi to/from mobile)</string>
     <string name="netchange">Reconnect on network change</string>
     <string name="netstatus">Network Status: %s</string>
@@ -238,26 +233,26 @@
     <string name="notifcation_title">Supple VPN - %s</string>
     <string name="session_ipv4string">%1$s - %2$s</string>
     <string name="session_ipv6string">%1$s - %3$s, %2$s</string>
-    <string name="state_connecting">Подключение</string>
-    <string name="state_wait">Ожидание сервера</string>
-    <string name="state_auth">Авторизация</string>
-    <string name="state_get_config">Получение конфигурации</string>
+    <string name="state_connecting">Connecting</string>
+    <string name="state_wait">Waiting for server reply</string>
+    <string name="state_auth">Authenticating</string>
+    <string name="state_get_config">Getting client configuration</string>
     <string name="state_assign_ip">Assigning IP addresses</string>
     <string name="state_add_routes">Adding routes</string>
-    <string name="state_connected">Подключено</string>
-    <string name="state_disconnected">Отключено</string>
-    <string name="state_reconnecting">Повторное подключение</string>
+    <string name="state_connected">Connected</string>
+    <string name="state_disconnected">Disconnect</string>
+    <string name="state_reconnecting">Reconnecting</string>
     <string name="state_exiting">Exiting</string>
     <string name="state_noprocess">Not running</string>
     <string name="state_resolve">Resolving host names</string>
-    <string name="state_tcp_connect">Подключение (TCP)</string>
-    <string name="state_auth_failed">Ошибка подключения</string>
+    <string name="state_tcp_connect">Connecting (TCP)</string>
+    <string name="state_auth_failed">Authentication failed</string>
     <string name="state_nonetwork">Waiting for usable network</string>
     <string name="state_waitorbot">Waiting for Orbot to start</string>
     <string name="statusline_bytecount">↓%2$s %1$s - ↑%4$s %3$s</string>
-    <string name="notifcation_title_notconnect">Не подключено</string>
-    <string name="start_vpn_title">Подключение к серверу %s</string>
-    <string name="start_vpn_ticker">Подключение к серверу %s</string>
+    <string name="notifcation_title_notconnect">Not connected</string>
+    <string name="start_vpn_title">Connecting to VPN %s</string>
+    <string name="start_vpn_ticker">Connecting to VPN %s</string>
     <string name="jelly_keystore_alphanumeric_bug">Some versions of Android 4.1 have problems if the name of the keystore certificate contains non alphanumeric characters (like spaces, underscores or dashes). Try to reimport the certificate without special characters</string>
     <string name="encryption_cipher">Encryption cipher</string>
     <string name="packet_auth">Packet authentication</string>
@@ -286,8 +281,8 @@
     <string name="screenoff_pause">Pausing connection in screen off state: less than %1$s in %2$ss</string>
     <string name="screen_nopersistenttun">Warning: Persistent tun not enabled for this VPN. Traffic will use the normal Internet connection when the screen is off.</string>
     <string name="save_password">Save Password</string>
-    <string name="pauseVPN">Пауза</string>
-    <string name="resumevpn">Возобновить</string>
+    <string name="pauseVPN">Pause VPN</string>
+    <string name="resumevpn">Resume VPN</string>
     <string name="state_userpause">VPN pause requested by user</string>
     <string name="state_screenoff">VPN paused - screen off</string>
     <string name="device_specific">Device specifics Hacks</string>
@@ -350,6 +345,8 @@
     <string name="payload_options">Payload options</string>
     <string name="tls_settings">TLS Settings</string>
     <string name="no_remote_defined">No remote defined</string>
+    <string name="yes" translatable="false">Yes</string>
+    <string name="no" translatable="false">No</string>
     <string name="duplicate_vpn">Duplicate VPN profile</string>
     <string name="duplicate_profile_title">Duplicating profile: %s</string>
     <string name="show_log">Show log</string>

@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Supple VPN</string>
+
+    <!--network errors-->
+    <string name="message_timeout_exception">El servidor no está disponible actualmente</string>
+    <string name="message_network_exception">Error de conexión a Internet</string>
+    <string name="message_unknown_exception">Error Desconocido</string>
+    <string name="text_server_none_selected">Servidor no seleccionado</string>
+
+    <!--vpn notification service-->
+    <string name="header_clever_vpn">Modo Inteligente</string>
+    <string name="title_offline_vpn">VPN no conectado </string>
+    <string name="title_loading_vpn">Establecer una conexión..</string>
+    <string name="title_online_vpn">VPN conectado</string>
+    <string name="text_description_auto_vpn">Modo Inteligente</string>
+
+    <!--payments-->
+    <string name="description_payments">Opcional</string>
+    <string name="hint_payments_sum">Introduzca la cantidad</string>
+    <string name="button_payments_sum">Siguiente</string>
+    <string name="description_payments_info">El proyecto Supple VPN viene completamente gratis y sin contenido publicitario. Puede contribuir al desarrollo transfiriendo cualquier cantidad para donar. Los datos de pago no se almacenan y se transmiten en forma encriptada al Servicio \"Yukassa\"</string>
+    <string name="dialog_payment_title">Pago</string>
+    <string name="dialog_success_payment_description">Pago realizado correctamente. ¡Gracias por apoyar el proyecto Supple VPN!</string>
+
+    <!--language-->
+    <string name="language_title_ru">Русский</string>
+    <string name="language_title_gb">English</string>
+    <string name="language_title_es">Español</string>
+    <string name="language_title_cn">中国语文科</string>
+
+    <!--other-->
+    <string name= "payment_title_dialog" >Donación al proyecto</string >
+    <string name="payment_amount">RUB</string>
+    <string name="dialog_next">Siguiente</string>
+    <string name="dialog_back">Atrás</string>
+    <string name="description_connection_list">Lista de servidores</string>
+    <string name="title_browser_scene">Supple Web</string>
+    <string name="text_dialog_clever_mode">Esta función le permite controlar automáticamente la vpn para las aplicaciones seleccionadas (consulte la lista a continuación)</string>
+
+</resources>

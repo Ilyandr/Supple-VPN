@@ -10,7 +10,7 @@ import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import gcu.product.supplevpn.R
-import gcu.product.supplevpn.presentation.views.text.HeavyText
+import gcu.product.supplevpn.presentation.views.other.HeavyText
 
 @Composable
 internal fun BaseHeaderItem(textId: Int) {

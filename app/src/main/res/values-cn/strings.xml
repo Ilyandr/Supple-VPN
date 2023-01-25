@@ -1,0 +1,40 @@
+<resources>
+    <string name="app_name">Supple VPN</string>
+
+    <!--网络错误-->
+    <string name="message_timeout_exception">服务器当前不可用</string>
+    <string name="message_network_exception">Internet连接错误</string>
+    <string name="message_unknown_exception">未知错误</string>
+    <string name="text_server_none_selected">未选择服务器</string>
+
+    <!--vpn通知服务-->
+    <string name="header_clever_vpn">智能模式</string>
+    <string name="title_offline_vpn">VPN未连接</string>
+    <string name="title_loading_vpn">安装连接。.</string>
+    <string name="title_online_vpn">VPN已连接</string>
+    <string name="text_description_auto_vpn">智能模式</string>
+
+    <!--付款-->
+    <string name="description_payments">可选</string>
+    <string name="hint_payments_sum">输入金额</string>
+    <string name="button_payments_sum">下一步</string>
+    <string name="description_payments_info">Supple VPN项目完全免费提供，没有广告内容。 您可以通过转移任何金额进行捐赠来为开发做出贡献。 付款数据不会以加密形式保存并传输到服务\"Yukassa\"</string>
+    <string name="dialog_payment_title">支付</string>
+    <string name="dialog_success_payment_description">付款成功完成。 感谢您对Supple VPN项目的支持！</string>
+
+    <!--语言-->
+    <string name="language_title_ru">Русский</string>
+    <string name="language_title_gb">English</string>
+    <string name="language_title_es">Español</string>
+    <string name="language_title_cn">中国语文科</string>
+
+    <!--其他-->
+    <string name="payment_title_dialog">捐赠给项目</string>
+    <string name="payment_amount">RUB</string>
+    <string name="dialog_next">下一步</string>
+    <string name="dialog_back">返回</string>
+    <string name="description_connection_list">服务器列表</string>
+    <string name="title_browser_scene">柔顺Web</string>
+    <string name="text_dialog_clever_mode">此功能允许您自动控制所选应用程序的vpn（请参阅下面的列表）</string>
+
+</resources>

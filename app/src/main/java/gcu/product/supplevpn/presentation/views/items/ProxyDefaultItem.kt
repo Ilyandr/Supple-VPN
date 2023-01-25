@@ -2,6 +2,7 @@ package gcu.product.supplevpn.presentation.views.items
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -27,7 +28,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.R
-import gcu.product.supplevpn.presentation.views.text.DefaultText
+import gcu.product.supplevpn.presentation.views.other.DefaultText
 import gcu.product.supplevpn.repository.features.utils.requireConnectionSpeedSource
 import gcu.product.supplevpn.repository.features.utils.requireConnectionTypeSource
 import gcu.product.supplevpn.repository.features.utils.requireImage
@@ -48,7 +49,9 @@ internal inline fun ProxyDefaultItem(
             model = imageRequest.data(item.requireImageHost()).build(),
             placeholder = R.drawable.ic_launcher_foreground.requireImage(),
             contentDescription = null,
-            modifier = Modifier.layoutId("flagImage")
+            modifier = Modifier
+                .layoutId("flagImage")
+                .border(width = 2.dp, color = Color.LightGray, shape = RoundedCornerShape(6.dp))
         )
 
         DefaultText(modifier = Modifier.layoutId("countryDescription"), text = item.countryShort ?: "Unknown")

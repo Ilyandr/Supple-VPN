@@ -35,8 +35,6 @@ dependencies {
 
     // Core
     implementation("androidx.core:core-ktx:1.9.0")
-    implementation("androidx.appcompat:appcompat:1.5.1")
-    implementation("com.google.android.material:material:1.7.0")
 
     // Room
     val roomVersion = "2.5.0"
@@ -50,6 +48,7 @@ dependencies {
     val base64Version = "1.0.6"
     implementation("com.squareup.okhttp3:okhttp:$okHttpVersion")
     implementation("com.squareup.retrofit2:retrofit:$retrofitVersion")
+    implementation("com.squareup.retrofit2:converter-gson:$retrofitVersion")
     implementation("de.peilicke.sascha:kase64:$base64Version")
 
     //  DI

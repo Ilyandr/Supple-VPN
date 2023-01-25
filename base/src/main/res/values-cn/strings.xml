@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">base</string>
+
+    <!--proxy list headers-->
+    <string name="proxy_list_header_default">免费服务器</string>
+    <string name="proxy_list_header_premium">高级服务器</string>
+</resources>

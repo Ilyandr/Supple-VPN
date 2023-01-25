@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">base</string>
+
+    <!--proxy list headers-->
+    <string name="proxy_list_header_default">Бесплатные сервера</string>
+    <string name="proxy_list_header_premium">Premium сервера</string>
+</resources>

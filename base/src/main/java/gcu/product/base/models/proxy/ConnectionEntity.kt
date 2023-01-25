@@ -33,5 +33,8 @@ data class ConnectionEntity(
 
     companion object {
         fun String.requireFormatVpnKey() = replaceFirst("remote", "").split("remote")[1].split("#")[0].trim()
+
+        infix fun requireImageHost(countryShort: String) =
+            "$FLAGS_API_HOST${countryShort.lowercase(Locale.getDefault())}.svg"
     }
 }

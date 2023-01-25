@@ -11,6 +11,7 @@ import android.content.Intent
 import android.content.pm.ApplicationInfo
 import android.content.pm.PackageInfo
 import android.content.pm.PackageManager
+import android.content.res.Configuration
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.StringRes
@@ -20,6 +21,7 @@ import gcu.product.base.models.apps.ApplicationEntity
 import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.gateway.Constants.VPN_API_LOGIN
 import gcu.product.gateway.Constants.VPN_API_PASSWORD
+import gcu.product.supplevpn.repository.features.utils.Constants.APPLICATION_PATH
 import gcu.product.usecase.database.applications.ApplicationsUseCase
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.core.Completable
@@ -30,6 +32,7 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import java.util.Locale
 import java.util.SortedMap
 import java.util.TreeMap
 
@@ -65,7 +68,8 @@ internal object Utils {
                                 ApplicationEntity(
                                     name = label,
                                     imagePath = singleInfo.packageName,
-                                    isEnabled = this[label] ?: false
+                                    isEnabled = if (singleInfo.packageName == APPLICATION_PATH) true else this[label]
+                                        ?: false
                                 ).apply { applicationsUseCase.insertApp(this).simpleRequest() }
                             } else null
                         } else null
@@ -150,5 +154,14 @@ internal object Utils {
         }
     } catch (e: Exception) {
         false
+    }
+
+    infix fun Context.updateLocale(languageCode: String) {
+        val locale = Locale(languageCode)
+        Locale.setDefault(locale)
+        val config: Configuration = resources.configuration
+        config.setLocale(locale)
+        @Suppress("DEPRECATION")
+        resources.updateConfiguration(config, resources.displayMetrics)
     }
 }

@@ -3,9 +3,9 @@ package gcu.product.supplevpn.presentation.other
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import gcu.product.supplevpn.repository.source.architecture.other.ConnectionStateSource
+import gcu.product.supplevpn.repository.source.callback.ConnectionCallback
 
-internal class ConnectionReceiver(private val source: ConnectionStateSource) : BroadcastReceiver() {
+internal class ConnectionReceiver(private val source: ConnectionCallback) : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
 

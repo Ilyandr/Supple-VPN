@@ -21,14 +21,14 @@ internal abstract class FlowableViewModel<T> : ViewModel(), InteractionViewModel
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { successAction.invoke(it) },
-                { error -> Log.e("err", error.stackTraceToString());faultAction(error) })
+                { error -> Log.e("err", error.stackTraceToString());setFaultAction(error) })
     }
 
     @SuppressLint("CheckResult")
     override fun Completable.simpleRequest(successAction: unitAction) {
         subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ successAction.invoke() }, { error -> faultAction(error) })
+            .subscribe({ successAction.invoke() }, { error -> setFaultAction(error) })
     }
 
     override fun handleError(error: Throwable) = when (error) {
