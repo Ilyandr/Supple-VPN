@@ -15,9 +15,17 @@ import android.content.res.Configuration
 import android.os.Build
 import android.widget.Toast
 import androidx.annotation.StringRes
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.AnnotatedString
+import androidx.compose.ui.text.SpanStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.style.TextDecoration
+import androidx.compose.ui.text.withStyle
 import androidx.core.content.ContextCompat
 import de.blinkt.openvpn.OpenVpnApi
 import gcu.product.base.models.apps.ApplicationEntity
+import gcu.product.base.models.other.LinkTextModel
 import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.gateway.Constants.VPN_API_LOGIN
 import gcu.product.gateway.Constants.VPN_API_PASSWORD
@@ -163,5 +171,30 @@ internal object Utils {
         config.setLocale(locale)
         @Suppress("DEPRECATION")
         resources.updateConfiguration(config, resources.displayMetrics)
+    }
+
+    @Composable
+    infix fun createAnnotatedString(data: List<LinkTextModel>): AnnotatedString {
+        return buildAnnotatedString {
+            data.forEach { linkTextData ->
+                if (linkTextData.tag != null && linkTextData.annotation != null) {
+                    pushStringAnnotation(
+                        tag = linkTextData.tag!!,
+                        annotation = linkTextData.annotation!!,
+                    )
+                    withStyle(
+                        style = SpanStyle(
+                            color = Color.Blue,
+                            textDecoration = TextDecoration.Underline,
+                        ),
+                    ) {
+                        append(linkTextData.text)
+                    }
+                    pop()
+                } else {
+                    append(linkTextData.text)
+                }
+            }
+        }
     }
 }

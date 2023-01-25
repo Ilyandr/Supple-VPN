@@ -57,7 +57,7 @@
     <string name="broken_image_cert_title">Ошибка при отображении выбора сертификата</string>
     <string name="broken_images">Неработающие изображения</string>
     <string name="broken_images_faq"> &lt; p > Известно, что официальные образы HTC имеют странную проблему маршрутизации, из-за которой трафик не проходит через туннель (см. также &lt; a href="https://github.com/schwabe/ics-openvpn/issues/18" > Выпуск 18 &lt; / а > в системе отслеживания ошибок.) &lt; /p >&lt; р > Сообщалось, что в старых официальных образах SONY для Xperia Arc S и Xperia Ray полностью отсутствует VPNService. (См. также &lt; a href="https://github.com/schwabe/ics-openvpn/issues/29" > Issue 29 &lt; /a > в системе отслеживания ошибок .) &lt; /p >&lt; р > В пользовательских образах сборки модуль tun может отсутствовать или права /dev/tun могут быть неправильными. Для некоторых образов CM9 требуется включить параметр «Исправить владельца» в разделе «Взломы для конкретных устройств». &lt; /p >&lt; р > Самое главное: если на вашем устройстве есть неработающий образ Android, сообщите об этом своему поставщику. Чем больше людей сообщают о проблеме поставщику, тем больше вероятность, что они ее исправят. &lt; /p > </string>
-    <string name="building_configration"> Сборка составление </string>
+    <string name="building_configration"> Сборка конфигурации</string>
     <string name="built_by">построен %s</string>
     <string name="ca_title">Сертификат ЦС</string>
     <string name="cancel">Отмена</string>
@@ -409,7 +409,7 @@
     <string name="state_connecting"> Подключение </string>
     <string name="state_disconnected"> Отключено </string>
     <string name="state_exiting">Выход</string>
-    <string name="state_get_config"> Получение составление </string>
+    <string name="state_get_config">Получение информации</string>
     <string name="state_nonetwork">Ожидание доступной сети</string>
     <string name="state_noprocess">Не выполняется</string>
     <string name="state_reconnecting"> Повторное подключение </string>

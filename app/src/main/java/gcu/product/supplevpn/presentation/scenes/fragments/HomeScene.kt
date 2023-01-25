@@ -252,8 +252,14 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
                                         navController.navigate(BROWSER_DESTINATION)
                                     } else {
                                         if (selectedVpnModelState?.value != null) {
-                                            prepare(context)?.run { activityLauncher.launch(this) }
-                                                ?: context.launchVpnService(selectedVpnModelState.value)
+                                            if (!context.checkGrantedPermission(Manifest.permission.POST_NOTIFICATIONS)) {
+                                                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                                                    permissionsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                                                }
+                                            } else {
+                                                prepare(context)?.run { activityLauncher.launch(this) }
+                                                    ?: context.launchVpnService(selectedVpnModelState.value)
+                                            }
                                         } else {
                                             selectedConnectionState.value = true
                                         }
@@ -294,8 +300,14 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
 
         EnableVpnButtonItem(modifier = Modifier.layoutId(POWER_BUTTON), submitButtonState = submitButtonState) {
             if (selectedVpnModelState?.value != null) {
-                prepare(context)?.run { activityLauncher.launch(this) }
-                    ?: context.launchVpnService(selectedVpnModelState.value)
+                if (!context.checkGrantedPermission(Manifest.permission.POST_NOTIFICATIONS)) {
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                        permissionsLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                    }
+                } else {
+                    prepare(context)?.run { activityLauncher.launch(this) }
+                        ?: context.launchVpnService(selectedVpnModelState.value)
+                }
             } else {
                 selectedConnectionState.value = true
             }

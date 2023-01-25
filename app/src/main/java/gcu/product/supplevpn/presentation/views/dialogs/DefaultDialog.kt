@@ -30,15 +30,18 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import gcu.product.base.models.other.LinkTextModel
 import gcu.product.supplevpn.R
+import gcu.product.supplevpn.presentation.views.other.LinkText
 import gcu.product.supplevpn.repository.features.utils.unitAction
 
 @Composable
 internal inline fun SuppleDefaultDialog(
     openDialogCustom: MutableState<Boolean>? = null,
     @StringRes titleTextId: Int? = null,
-    @StringRes descriptionTextId: Int,
+    @StringRes descriptionTextId: Int? = null,
     @DrawableRes iconId: Int? = null,
+    spannableList: List<LinkTextModel>? = null,
     noinline positiveButton: unitAction? = null,
     noinline negativeButton: unitAction? = null,
     crossinline cancelAction: unitAction
@@ -63,28 +66,37 @@ internal inline fun SuppleDefaultDialog(
                     )
                 }
 
-                Column(modifier = Modifier.padding(16.dp)) {
+                Column(modifier = Modifier.padding(if (iconId != null) 8.dp else 16.dp)) {
                     titleTextId?.run {
                         Text(
                             text = stringResource(id = this),
                             textAlign = TextAlign.Center,
                             fontStyle = FontStyle(R.font.sf_heavy),
-                            fontSize = 24.sp,
+                            fontSize = 22.sp,
                             modifier = Modifier.fillMaxWidth(),
                             maxLines = 2,
                             overflow = TextOverflow.Ellipsis
                         )
                     }
 
-                    Text(
-                        text = stringResource(id = descriptionTextId),
-                        textAlign = TextAlign.Center,
-                        fontStyle = FontStyle(R.font.sf_regular),
-                        fontSize = 19.sp,
-                        modifier = Modifier
-                            .padding(top = 12.dp, start = 24.dp, end = 24.dp)
-                            .fillMaxWidth(),
-                    )
+                    if (descriptionTextId != null) {
+                        Text(
+                            text = stringResource(id = descriptionTextId),
+                            textAlign = TextAlign.Center,
+                            fontStyle = FontStyle(R.font.sf_regular),
+                            fontSize = 19.sp,
+                            modifier = Modifier
+                                .padding(top = 12.dp, start = 24.dp, end = 24.dp)
+                                .fillMaxWidth(),
+                        )
+                    } else if (spannableList != null) {
+                        LinkText(
+                            spannableList, Modifier
+                                .padding(top = 12.dp, start = 24.dp, end = 24.dp, bottom = 8.dp)
+                                .fillMaxWidth()
+                        )
+
+                    }
                 }
 
                 Divider(color = Color.LightGray, thickness = 1.dp)

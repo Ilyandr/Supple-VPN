@@ -17,8 +17,11 @@ import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSJetPackComposeProgres
 import com.simform.ssjetpackcomposeprogressbuttonlibrary.utils.six
 import de.blinkt.openvpn.core.OpenVPNService
 import gcu.product.supplevpn.R
+import gcu.product.supplevpn.repository.features.utils.Utils.actionWithDelay
 import gcu.product.supplevpn.repository.features.utils.requireImage
 import gcu.product.supplevpn.repository.features.utils.unitAction
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
 
 @Composable
 internal inline fun EnableVpnButtonItem(
@@ -27,6 +30,9 @@ internal inline fun EnableVpnButtonItem(
     crossinline launchAction: unitAction
 ) =
     Box(modifier = modifier) {
+        if (submitButtonState.value == SSButtonState.FAILIURE) {
+            CoroutineScope(Dispatchers.Main).actionWithDelay(2000L) { submitButtonState.value = SSButtonState.IDLE }
+        }
         SSJetPackComposeProgressButton(
             type = SSButtonType.CLOCK,
             width = 120.dp,
@@ -45,8 +51,7 @@ internal inline fun EnableVpnButtonItem(
             elevation = ButtonDefaults.elevation(6.dp),
             assetColor = colorResource(
                 id = when (submitButtonState.value) {
-                    SSButtonState.IDLE, SSButtonState.LOADING -> R.color.primaryColor
-                    SSButtonState.FAILIURE -> R.color.red
+                    SSButtonState.IDLE, SSButtonState.LOADING, SSButtonState.FAILIURE -> R.color.primaryColor
                     else -> R.color.green
                 }
             ),

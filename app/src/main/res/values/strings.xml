@@ -28,6 +28,12 @@
     <string name="language_title_es">Español</string>
     <string name="language_title_cn">中国语文科</string>
 
+    <!--information-->
+    <string name="faq_title_dialog">О приложении</string>
+    <string name="author_link" translatable="false">https://vk.com/id_cs_sourse</string>
+    <string name="faq_description_dialog1" translatable="false">Supple VPN, version: 1.2.8-beta.</string>
+    <string name="faq_description_dialog2" translatable="false">\nDeveloper link</string>
+
     <!--other-->
     <string name="payment_title_dialog">Пожертвование проекту</string>
     <string name="payment_amount">RUB</string>

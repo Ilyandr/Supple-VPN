@@ -1,17 +1,22 @@
 package gcu.product.supplevpn.presentation.scenes.fragments
 
+import android.content.Intent
+import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.wrapContentSize
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
@@ -32,6 +37,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
+import gcu.product.base.models.other.LinkTextModel
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.domain.models.PaymentModel
 import gcu.product.supplevpn.domain.viewModels.PaymentViewModel
@@ -55,11 +61,25 @@ internal fun PaymentScene(navController: NavController, viewModel: PaymentViewMo
     val priceState = remember { mutableStateOf("") }
     val loadingState = remember { mutableStateOf(false) }
     val buttonLoadingState = remember { mutableStateOf(false) }
-    val openDialogState = remember { mutableStateOf(false) }
+    val paymentDialogState = remember { mutableStateOf(false) }
+    val faqDialogState = remember { mutableStateOf(false) }
     val currentMessage = remember { mutableStateOf<Int?>(null) }
     val context = LocalContext.current
     val dialogTitle = stringResource(id = R.string.payment_title_dialog)
     val paymentAmount = stringResource(id = R.string.payment_amount)
+    val faqDialogDescription = listOf(
+        LinkTextModel(
+            text = stringResource(id = R.string.faq_description_dialog1)
+        ),
+        LinkTextModel(
+            text = stringResource(id = R.string.faq_description_dialog2), tag = "link",
+            annotation = stringResource(id = R.string.author_link),
+            onClick = {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(it)))
+            },
+        )
+    )
+
 
     val launchTokenize = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.StartActivityForResult()
@@ -123,14 +143,14 @@ internal fun PaymentScene(navController: NavController, viewModel: PaymentViewMo
         is PaymentModel.SuccessState -> {
             loadingState.value = false
             currentMessage.value = R.string.dialog_success_payment_description
-            openDialogState.value = true
+            paymentDialogState.value = true
             viewModel.actionReady()
         }
 
         is PaymentModel.FaultState -> {
             loadingState.value = false
             currentMessage.value = value.error
-            openDialogState.value = true
+            paymentDialogState.value = true
             viewModel.actionReady()
         }
 
@@ -147,13 +167,22 @@ internal fun PaymentScene(navController: NavController, viewModel: PaymentViewMo
         if (loadingState.value) {
             LoadingDialog(loadingState) { loadingState.value = false }
         }
-        if (openDialogState.value) {
+        if (paymentDialogState.value) {
             SuppleDefaultDialog(
-                openDialogCustom = openDialogState,
+                openDialogCustom = paymentDialogState,
                 titleTextId = R.string.dialog_payment_title,
                 iconId = if (currentMessage.value == R.string.dialog_success_payment_description) R.drawable.ic_success_payment else R.drawable.ic_error_payment,
                 descriptionTextId = currentMessage.value!!,
-                cancelAction = { openDialogState.value = false }
+                cancelAction = { paymentDialogState.value = false }
+            )
+        }
+        if (faqDialogState.value) {
+            SuppleDefaultDialog(
+                openDialogCustom = faqDialogState,
+                iconId = R.drawable.ic_info_faq,
+                titleTextId = R.string.faq_title_dialog,
+                spannableList = faqDialogDescription,
+                cancelAction = { faqDialogState.value = false }
             )
         }
 
@@ -162,17 +191,32 @@ internal fun PaymentScene(navController: NavController, viewModel: PaymentViewMo
                 modifier = Modifier.fillMaxWidth(),
                 colors = TopAppBarDefaults.mediumTopAppBarColors(Color.Transparent),
                 title = {
-                    Image(
-                        modifier = Modifier
-                            .padding(horizontal = 12.dp)
-                            .clickable { navController.popBackStack() },
-                        painter = R.drawable.ic_back.requireImage(),
-                        contentDescription = null
-                    )
-                    HeavyText(
-                        modifier = Modifier.fillMaxWidth(),
-                        text = R.string.description_payments
-                    )
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        Image(
+                            modifier = Modifier
+                                .padding(horizontal = 12.dp)
+                                .clickable { navController.popBackStack() },
+                            painter = R.drawable.ic_back.requireImage(),
+                            contentDescription = null
+                        )
+
+                        HeavyText(
+                            modifier = Modifier.wrapContentSize(),
+                            text = R.string.description_payments
+                        )
+
+                        Image(
+                            modifier = Modifier
+                                .padding(horizontal = 12.dp)
+                                .clickable { faqDialogState.value = true },
+                            painter = R.drawable.ic_info.requireImage(),
+                            contentDescription = null
+                        )
+                    }
                 })
 
             Spacer(modifier = Modifier.height(16.dp))

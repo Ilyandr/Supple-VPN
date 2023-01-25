@@ -28,11 +28,15 @@ internal object Constants {
     const val ENGLISH_COUNTRY_CODE = "gb"
     const val CHINESE_COUNTRY_CODE = "cn"
     const val SPANISH_COUNTRY_CODE = "es"
+    const val RUSSIAN_LANGUAGE_CODE = "ru"
+    const val ENGLISH_LANGUAGE_CODE = "en"
+    const val CHINESE_LANGUAGE_CODE = "cn"
+    const val SPANISH_LANGUAGE_CODE = "es"
 
     // Payments
-    const val GENERAL_SHOP_ID = "private info"
-    const val GENERAL_SHOP_PASSWORD = "private info"
-    const val CURRENCY_APP_RU = "RUB"
-    const val GENERAL_SHOP_API_PASSWORD = "private info"
-    const val GENERAL_CLIENT_API_ID = "private info"
+    const val GENERAL_SHOP_ID = "private key"
+    const val GENERAL_SHOP_PASSWORD = "private key"
+    const val CURRENCY_APP_RU = "private key"
+    const val GENERAL_SHOP_API_PASSWORD = "private key"
+    const val GENERAL_CLIENT_API_ID = "private key"
 }

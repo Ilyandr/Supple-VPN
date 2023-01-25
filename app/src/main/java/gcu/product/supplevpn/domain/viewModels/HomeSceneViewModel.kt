@@ -94,7 +94,7 @@ internal class HomeSceneViewModel @Inject constructor(
     }
 
     override fun requireCurrentLanguage() =
-        sharedPreferences.getString(CURRENT_LANGUAGE_KEY, Locale.getDefault().country.lowercase(Locale.getDefault()))!!
+        sharedPreferences.getString(CURRENT_LANGUAGE_KEY, Locale.getDefault().language)!!
 
     infix fun saveCurrentConnection(data: ConnectionEntity) {
         sharedPreferences.edit().putString(CURRENT_CONNECTION_MODEL_KEY, data.requireFormatKey()).apply()

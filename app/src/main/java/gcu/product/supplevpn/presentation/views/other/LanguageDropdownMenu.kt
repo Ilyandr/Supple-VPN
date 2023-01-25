@@ -14,12 +14,17 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import gcu.product.base.models.other.LanguageEntity
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.items.LanguageItem
 import gcu.product.supplevpn.repository.features.utils.Constants.CHINESE_COUNTRY_CODE
+import gcu.product.supplevpn.repository.features.utils.Constants.CHINESE_LANGUAGE_CODE
 import gcu.product.supplevpn.repository.features.utils.Constants.ENGLISH_COUNTRY_CODE
+import gcu.product.supplevpn.repository.features.utils.Constants.ENGLISH_LANGUAGE_CODE
 import gcu.product.supplevpn.repository.features.utils.Constants.RUSSIAN_COUNTRY_CODE
+import gcu.product.supplevpn.repository.features.utils.Constants.RUSSIAN_LANGUAGE_CODE
 import gcu.product.supplevpn.repository.features.utils.Constants.SPANISH_COUNTRY_CODE
+import gcu.product.supplevpn.repository.features.utils.Constants.SPANISH_LANGUAGE_CODE
 import gcu.product.supplevpn.repository.source.callback.LanguageCallback
 
 @Composable
@@ -38,7 +43,7 @@ internal fun LanguageDropdownMenu(
             ) {
                 Column(modifier = Modifier.padding(horizontal = 12.dp)) {
                     languageList.forEachIndexed { index, item ->
-                        LanguageItem(titleId = item.first, countryCode = item.second, callback = callback)
+                        LanguageItem(data = item, callback = callback)
                         if (index != languageList.size - 1) Divider()
                     }
                 }
@@ -48,8 +53,24 @@ internal fun LanguageDropdownMenu(
 }
 
 internal fun requireLanguageList() = listOf(
-    R.string.language_title_ru to RUSSIAN_COUNTRY_CODE,
-    R.string.language_title_gb to ENGLISH_COUNTRY_CODE,
-    R.string.language_title_es to SPANISH_COUNTRY_CODE,
-    R.string.language_title_cn to CHINESE_COUNTRY_CODE
+    LanguageEntity(
+        description = R.string.language_title_ru,
+        countryCode = RUSSIAN_COUNTRY_CODE,
+        languageCode = RUSSIAN_LANGUAGE_CODE
+    ),
+    LanguageEntity(
+        description = R.string.language_title_gb,
+        countryCode = ENGLISH_COUNTRY_CODE,
+        languageCode = ENGLISH_LANGUAGE_CODE
+    ),
+    LanguageEntity(
+        description = R.string.language_title_es,
+        countryCode = SPANISH_COUNTRY_CODE,
+        languageCode = SPANISH_LANGUAGE_CODE
+    ),
+    LanguageEntity(
+        description = R.string.language_title_cn,
+        countryCode = CHINESE_COUNTRY_CODE,
+        languageCode = CHINESE_LANGUAGE_CODE
+    )
 )

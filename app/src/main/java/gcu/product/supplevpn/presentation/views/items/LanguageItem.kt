@@ -1,6 +1,5 @@
 package gcu.product.supplevpn.presentation.views.items
 
-import androidx.annotation.StringRes
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
@@ -15,6 +14,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.AsyncImage
+import gcu.product.base.models.other.LanguageEntity
 import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.other.DefaultText
@@ -23,25 +23,24 @@ import gcu.product.supplevpn.repository.source.callback.LanguageCallback
 
 @Composable
 internal fun LanguageItem(
-    @StringRes titleId: Int,
-    countryCode: String,
+    data: LanguageEntity,
     callback: LanguageCallback
 ) = with(callback) {
     DropdownMenuItem(
         text = {
             DefaultText(
                 fontSize = 19.sp,
-                text = stringResource(id = titleId),
-                textColor = colorResource(if (callback.requireCurrentLanguage() == countryCode) R.color.selectedColor else R.color.blackBlue)
+                text = stringResource(id = data.description),
+                textColor = colorResource(if (callback.requireCurrentLanguage() == data.languageCode || callback.requireCurrentLanguage() == data.countryCode) R.color.selectedColor else R.color.blackBlue)
             )
         },
         onClick = {
-            saveCurrentLanguage(countryCode)
+            saveCurrentLanguage(data.countryCode)
         },
         leadingIcon = {
             AsyncImage(
                 imageLoader = requireImageLoader(),
-                model = requireImageRequest().data(ConnectionEntity requireImageHost countryCode).build(),
+                model = requireImageRequest().data(ConnectionEntity requireImageHost data.countryCode).build(),
                 fallback = painterResource(id = R.drawable.ic_unknown_counry),
                 placeholder = R.drawable.ic_launcher_foreground.requireImage(),
                 contentDescription = null,

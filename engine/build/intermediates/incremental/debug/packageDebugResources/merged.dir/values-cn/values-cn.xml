@@ -193,7 +193,7 @@
     <string name="float_summary">允许来自任何IP的经过身份验证的数据包</string>
     <string name="float_title">允许浮动服务器</string>
     <string name="full_licenses">完整许可</string>
-    <string name="gbits_per_second">%. 1f Gbps </string>
+    <string name="gbits_per_second">%.1f Gbps </string>
     <string name="generalsettings">设置</string>
     <string name="generated_config">生成的配置</string>
     <string name="generated_config_summary">显示生成的 OpenVPN 配置文件</string>

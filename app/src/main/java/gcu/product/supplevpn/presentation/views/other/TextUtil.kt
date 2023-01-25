@@ -1,5 +1,7 @@
 package gcu.product.supplevpn.presentation.views.other
 
+import androidx.compose.foundation.text.ClickableText
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -11,7 +13,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.sp
+import gcu.product.base.models.other.LinkTextModel
 import gcu.product.supplevpn.R
+import gcu.product.supplevpn.repository.features.utils.Utils.createAnnotatedString
 
 @Composable
 internal fun DefaultText(
@@ -44,3 +48,26 @@ internal fun HeavyText(
     maxLines = 1,
     overflow = TextOverflow.Ellipsis
 )
+
+@Composable
+fun LinkText(linkTextData: List<LinkTextModel>, modifier: Modifier = Modifier) {
+    val annotatedString = createAnnotatedString(linkTextData)
+    ClickableText(
+        text = annotatedString,
+        style = MaterialTheme.typography.subtitle1,
+        onClick = { offset ->
+            linkTextData.forEach { annotatedStringData ->
+                if (annotatedStringData.tag != null && annotatedStringData.annotation != null) {
+                    annotatedString.getStringAnnotations(
+                        tag = annotatedStringData.tag!!,
+                        start = offset,
+                        end = offset,
+                    ).firstOrNull()?.let {
+                        annotatedStringData.onClick?.invoke(annotatedStringData.annotation)
+                    }
+                }
+            }
+        },
+        modifier = modifier,
+    )
+}

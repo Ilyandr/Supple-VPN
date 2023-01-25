@@ -28,6 +28,9 @@
     <string name="language_title_es">Español</string>
     <string name="language_title_cn">中国语文科</string>
 
+    <!--information-->
+    <string name="faq_title_dialog">关于应用程序</string>
+
     <!--其他-->
     <string name="payment_title_dialog">捐赠给项目</string>
     <string name="payment_amount">RUB</string>
