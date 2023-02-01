@@ -2,8 +2,8 @@ package gcu.product.supplevpn.presentation.scenes.fragments
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +13,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.CircularProgressIndicator
+import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
@@ -23,6 +24,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -45,6 +47,7 @@ import gcu.product.supplevpn.presentation.views.other.DefaultText
 import gcu.product.supplevpn.repository.features.utils.Utils.showToast
 import gcu.product.supplevpn.repository.features.utils.requireImage
 
+// Добавит тени к текству. Исключить лишние сервера, передалать состояние главное кнопки на главной странице (при ошибки подключения / отключения).
 @OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 @Composable
 internal fun ConnectionsScene(navController: NavController, viewModel: ConnectionsSceneViewModel = hiltViewModel()) {
@@ -72,11 +75,22 @@ internal fun ConnectionsScene(navController: NavController, viewModel: Connectio
         else -> Unit
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        colorResource(id = R.color.gradient_start),
+                        colorResource(id = R.color.gradient_end),
+                    )
+                )
+            ), contentAlignment = Alignment.Center
+    ) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds,
-            painter = R.drawable.ic_home_background.requireImage(),
+            contentScale = ContentScale.Fit,
+            painter = R.drawable.ic_earth.requireImage(),
             contentDescription = "background"
         )
 
@@ -116,22 +130,29 @@ internal fun ConnectionsScene(navController: NavController, viewModel: Connectio
                 }) {
                 LazyColumn(
                     modifier = Modifier.padding(vertical = 12.dp),
-                    verticalArrangement = Arrangement.spacedBy(12.dp),
                 ) {
-                    proxyListDefault.value.groupBy {
-                        it.requireHeaderStringResByFlag()
-                    }.forEach { (section, sectionProxy) ->
-                        stickyHeader { BaseHeaderItem(section) }
+                    proxyListDefault.value.groupBy { it.countryLong }.forEach { (section, sectionProxy) ->
+                        stickyHeader {
+                            BaseHeaderItem(section!!)
+                            Divider(Modifier.padding(top = 12.dp), color = Color.Transparent)
+                        }
                         items(sectionProxy) {
+                            val position = sectionProxy.indexOf(it)
                             ProxyDefaultItem(
                                 viewModel.requireImageRequest(),
                                 viewModel.requireImageLoader(),
+                                position + 1,
                                 it
                             ) { item ->
                                 with(navController) {
                                     previousBackStackEntry?.savedStateHandle?.set(SELECTED_VPN_KEY, item)
                                     popBackStack()
                                 }
+                            }
+                            if (position != sectionProxy.size - 1) {
+                                Divider(Modifier.padding(12.dp), color = colorResource(id = R.color.grayLight))
+                            } else {
+                                Divider(Modifier.padding(bottom = 12.dp), color = Color.Transparent)
                             }
                         }
                     }

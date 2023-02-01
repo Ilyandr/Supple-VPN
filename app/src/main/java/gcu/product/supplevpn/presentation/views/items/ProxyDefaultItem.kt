@@ -18,6 +18,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.layoutId
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
@@ -28,7 +31,7 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import gcu.product.base.models.proxy.ConnectionEntity
 import gcu.product.supplevpn.R
-import gcu.product.supplevpn.presentation.views.other.DefaultText
+import gcu.product.supplevpn.presentation.views.other.TextWithShadow
 import gcu.product.supplevpn.repository.features.utils.requireConnectionSpeedSource
 import gcu.product.supplevpn.repository.features.utils.requireConnectionTypeSource
 import gcu.product.supplevpn.repository.features.utils.requireImage
@@ -38,6 +41,7 @@ import gcu.product.supplevpn.repository.features.utils.vpnAction
 internal inline fun ProxyDefaultItem(
     imageRequest: ImageRequest.Builder,
     imageLoader: ImageLoader,
+    position: Int,
     item: ConnectionEntity,
     crossinline callback: vpnAction
 ) {
@@ -54,7 +58,14 @@ internal inline fun ProxyDefaultItem(
                 .border(width = 2.dp, color = Color.LightGray, shape = RoundedCornerShape(6.dp))
         )
 
-        DefaultText(modifier = Modifier.layoutId("countryDescription"), text = item.countryShort ?: "Unknown")
+        TextWithShadow(
+            modifier = Modifier.layoutId("countryDescription"),
+            text = "${item.countryShort} - №$position",
+            style = TextStyle.Default.copy(
+                fontSize = 21.sp,
+                fontFamily = FontFamily(Font(resId = R.font.sf_regular))
+            )
+        )
 
         Row(
             Modifier
@@ -75,7 +86,14 @@ internal inline fun ProxyDefaultItem(
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            DefaultText(text = item.protocol!!, fontSize = 18.sp)
+            TextWithShadow(
+                modifier = Modifier.layoutId("countryDescription"),
+                text = item.protocol!!,
+                style = TextStyle.Default.copy(
+                    fontSize = 18.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.sf_regular))
+                )
+            )
             Spacer(modifier = Modifier.width(8.dp))
             Image(
                 painter = requireConnectionTypeSource(item.protocol!!).requireImage(),

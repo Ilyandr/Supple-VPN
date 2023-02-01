@@ -15,9 +15,11 @@ internal object Constants {
     const val CURRENT_CONNECTION_MODEL_KEY = "connection_model_key"
     const val CURRENT_LANGUAGE_KEY = "language_key"
     const val AUTO_VPN_KEY = "auto_vpn_key"
+    const val FIRST_RATE_KEY = "first_rate_key"
 
     // Other
     const val DEFAULT_REST_TIMEOUT = 180L
+    const val APP_STORE_LINK = "market://details?id=gcu.product.supplevpn"
     const val STOP_SERVICE = "stop_service"
     const val START_SERVICE = "start_service"
     const val APPLICATION_PATH = "gcu.product.supplevpn"
@@ -34,9 +36,9 @@ internal object Constants {
     const val SPANISH_LANGUAGE_CODE = "es"
 
     // Payments
-    const val GENERAL_SHOP_ID = "private key"
-    const val GENERAL_SHOP_PASSWORD = "private key"
-    const val CURRENCY_APP_RU = "private key"
-    const val GENERAL_SHOP_API_PASSWORD = "private key"
-    const val GENERAL_CLIENT_API_ID = "private key"
+    const val GENERAL_SHOP_ID = "private info"
+    const val GENERAL_SHOP_PASSWORD = "private info"
+    const val CURRENCY_APP_RU = "private info"
+    const val GENERAL_SHOP_API_PASSWORD = "private info"
+    const val GENERAL_CLIENT_API_ID = "private info"
 }

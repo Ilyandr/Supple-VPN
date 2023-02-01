@@ -51,7 +51,8 @@ internal inline fun EnableVpnButtonItem(
             elevation = ButtonDefaults.elevation(6.dp),
             assetColor = colorResource(
                 id = when (submitButtonState.value) {
-                    SSButtonState.IDLE, SSButtonState.LOADING, SSButtonState.FAILIURE -> R.color.primaryColor
+                    SSButtonState.IDLE, SSButtonState.LOADING -> R.color.primaryColor
+                    SSButtonState.FAILIURE -> R.color.red
                     else -> R.color.green
                 }
             ),

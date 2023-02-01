@@ -17,6 +17,7 @@ import gcu.product.supplevpn.repository.features.utils.Constants.APPLICATION_PAT
 import gcu.product.supplevpn.repository.features.utils.Constants.AUTO_VPN_KEY
 import gcu.product.supplevpn.repository.features.utils.Constants.CURRENT_CONNECTION_MODEL_KEY
 import gcu.product.supplevpn.repository.features.utils.Constants.CURRENT_LANGUAGE_KEY
+import gcu.product.supplevpn.repository.features.utils.Constants.FIRST_RATE_KEY
 import gcu.product.supplevpn.repository.features.utils.FlowSupport.set
 import gcu.product.supplevpn.repository.features.utils.Utils.actionWithDelay
 import gcu.product.supplevpn.repository.features.utils.Utils.requireApplicationList
@@ -24,6 +25,7 @@ import gcu.product.supplevpn.repository.source.architecture.viewModels.FlowableV
 import gcu.product.supplevpn.repository.source.callback.ApplicationsCallback
 import gcu.product.supplevpn.repository.source.callback.ConnectionCallback
 import gcu.product.supplevpn.repository.source.callback.LanguageCallback
+import gcu.product.supplevpn.repository.source.callback.RateAppCallback
 import gcu.product.usecase.database.applications.ApplicationsUseCase
 import gcu.product.usecase.database.connections.ConnectionsUseCase
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -42,7 +44,7 @@ internal class HomeSceneViewModel @Inject constructor(
     private val imageLoader: ImageLoader,
     private val sharedPreferences: SharedPreferences,
     private val connectionReceiverIntent: IntentFilter
-) : FlowableViewModel<HomeSceneModel>(), ConnectionCallback, ApplicationsCallback, LanguageCallback {
+) : FlowableViewModel<HomeSceneModel>(), ConnectionCallback, ApplicationsCallback, LanguageCallback, RateAppCallback {
 
     private val connectionReceiver by lazy { ConnectionReceiver(this) }
     private val mutableStateFlow: MutableStateFlow<HomeSceneModel> by lazy {
@@ -69,6 +71,10 @@ internal class HomeSceneViewModel @Inject constructor(
 
                 is HomeSceneModel.UpdateLanguageState -> {
                     viewModelScope.actionWithDelay { mutableStateFlow set HomeSceneModel.LoadingAppState }
+                }
+
+                is HomeSceneModel.ConnectionStatusState -> {
+                    viewModelScope.actionWithDelay { actionReady() }
                 }
 
                 else -> Unit
@@ -107,6 +113,12 @@ internal class HomeSceneViewModel @Inject constructor(
 
     infix fun saveAutoVpnStatus(value: Boolean) =
         sharedPreferences.edit().putBoolean(AUTO_VPN_KEY, value).apply()
+
+    override fun requireFirstRateAppStatus() =
+        sharedPreferences.getBoolean(FIRST_RATE_KEY, false)
+
+    override fun saveFirstRateAppStatus(value: Boolean) =
+        sharedPreferences.edit().putBoolean(FIRST_RATE_KEY, value).apply()
 
     private fun requireListApplications() =
         packageManager.requireApplicationList(applicationsUseCase) { listApps ->

@@ -1,5 +1,8 @@
 package gcu.product.base.models.apps
 
+import androidx.annotation.Keep
+
+@Keep
 enum class ConnectionStatus {
     LOADING, CONNECTED, FAULT
 }

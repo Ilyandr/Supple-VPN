@@ -30,7 +30,12 @@
 
     <string name="faq_title_dialog">О приложении</string>
 
+    <!--rate dialog-->
+    <string name="title_rate_dialog">Оцените приложение</string>
+    <string name="description_rate_dialog">Нам очень важно получать обратную связь от вас. Вы помогаете проекту стать лучше!</string>
+
     <!--other-->
+    <string name="search_apps_hint">Название приложения</string>
     <string name="payment_title_dialog">Пожертвование проекту</string>
     <string name="payment_amount">RUB</string>
     <string name="dialog_next">Далее</string>

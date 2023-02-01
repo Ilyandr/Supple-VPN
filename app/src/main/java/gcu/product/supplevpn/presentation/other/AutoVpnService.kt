@@ -69,7 +69,6 @@ internal class AutoVpnService : Service(), ConnectionCallback {
             Constants.START_SERVICE -> {
                 isAutoVpnServiceEnabled = true
                 registerReceiver(connectionReceiver, connectionReceiverIntent)
-                OpenVPNService.lastVpnStatus?.run { setConnectionStatus(this) }
             }
 
             Constants.STOP_SERVICE -> {
@@ -137,6 +136,7 @@ internal class AutoVpnService : Service(), ConnectionCallback {
 
     private fun setLaunchedAppsListener() {
         executor.scheduleAtFixedRate({
+            OpenVPNService.lastVpnStatus?.run { setConnectionStatus(this) }
             with(baseContext.requireCurrentTask()) {
                 applicationsUseCase.requireApps().singleRequest { selectedApps ->
                     if (selectedApps.isNotEmpty()) {
@@ -182,14 +182,17 @@ internal class AutoVpnService : Service(), ConnectionCallback {
         var isAutoVpnServiceEnabled = false
 
         internal infix fun Context.connectAutoVpnService(isEnabled: Boolean) {
-            if (isAutoVpnServiceEnabled && isEnabled) return
-            with(Intent(this, AutoVpnService::class.java)) {
-                action = if (isEnabled) Constants.START_SERVICE else Constants.STOP_SERVICE
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-                    startForegroundService(this)
-                } else {
-                    startService(this)
+            try {
+                if (isAutoVpnServiceEnabled && isEnabled) return
+                with(Intent(this, AutoVpnService::class.java)) {
+                    action = if (isEnabled) Constants.START_SERVICE else Constants.STOP_SERVICE
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                        startForegroundService(this)
+                    } else {
+                        startService(this)
+                    }
                 }
+            } catch (_: Exception) {
             }
         }
     }

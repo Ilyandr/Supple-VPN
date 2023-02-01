@@ -19,11 +19,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.dialogs.SuppleDefaultDialog
-import gcu.product.supplevpn.presentation.views.other.HeavyText
+import gcu.product.supplevpn.presentation.views.other.TextWithShadow
 import gcu.product.supplevpn.repository.features.utils.booleanAction
 
 @Composable
@@ -57,8 +61,18 @@ internal fun TumblerWithTextItem(
             painter = painterResource(id = R.drawable.ic_info),
             contentDescription = null
         )
+
         Spacer(modifier = Modifier.width(8.dp))
-        HeavyText(text = textId, fontSize = 19.sp)
+
+        TextWithShadow(
+            modifier = Modifier.padding(top = 2.dp),
+            text = stringResource(textId, "World"),
+            style = TextStyle.Default.copy(
+                fontSize = 19.sp,
+                fontFamily = FontFamily(Font(resId = R.font.sf_medium))
+            )
+        )
+
         Switch(
             modifier = Modifier.padding(top = 4.dp, start = 8.dp),
             checked = enabledState.value,

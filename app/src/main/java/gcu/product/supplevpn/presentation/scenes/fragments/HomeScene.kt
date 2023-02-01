@@ -10,9 +10,11 @@ import android.provider.Settings
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
@@ -26,10 +28,12 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.layout.layoutId
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -50,13 +54,19 @@ import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints
 import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints.LIST_APPS
 import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints.POWER_BUTTON
 import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints.PROGRESS_VIEW
+import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints.SEARCH_APPS_DISABLED
+import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints.SEARCH_APPS_ENABLED
 import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints.TOP_APP_BAR_VIEW
 import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints.TUMBLER_APPS
 import gcu.product.supplevpn.presentation.scenes.constrains.HomeSceneConstraints.requireHomeSceneConstraints
+import gcu.product.supplevpn.presentation.views.BackHandler
+import gcu.product.supplevpn.presentation.views.animations.CrossSlide
+import gcu.product.supplevpn.presentation.views.dialogs.RateAppDialog
 import gcu.product.supplevpn.presentation.views.items.EnableVpnButtonItem
 import gcu.product.supplevpn.presentation.views.items.TumblerWithTextItem
 import gcu.product.supplevpn.presentation.views.other.ApplicationsList
 import gcu.product.supplevpn.presentation.views.other.LanguageDropdownMenu
+import gcu.product.supplevpn.presentation.views.other.SearchView
 import gcu.product.supplevpn.repository.features.utils.Constants
 import gcu.product.supplevpn.repository.features.utils.Constants.BROWSER_DESTINATION
 import gcu.product.supplevpn.repository.features.utils.Utils.actionWithDelay
@@ -67,6 +77,7 @@ import gcu.product.supplevpn.repository.features.utils.Utils.updateLocale
 import gcu.product.supplevpn.repository.features.utils.requireImage
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.MainScope
 
 
 @SuppressLint("UnspecifiedRegisterReceiverFlag", "UnrememberedMutableState")
@@ -82,11 +93,14 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
     val viewState = viewModel.stateFlow.collectAsState()
     val context = LocalContext.current
     val submitButtonState = rememberSaveable { mutableStateOf(SSButtonState.IDLE) }
+    val rateDialogState = remember { mutableStateOf(false) }
     val browserState = rememberSaveable { mutableStateOf(false) }
     val appList = rememberSaveable { mutableStateOf(listOf<ApplicationEntity?>()) }
     val autoVpnEnabledState = remember { mutableStateOf(viewModel.requireAutoVpnStatus()) }
     val loadingState = rememberSaveable { mutableStateOf(true) }
     val openLanguageState = remember { mutableStateOf(false) }
+    val searchState = remember { mutableStateOf(false) }
+    val searchText = remember { mutableStateOf("") }
     val selectedConnectionState = mutableStateOf(false)
 
     val dialogLauncher = rememberLauncherForActivityResult(
@@ -187,13 +201,18 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
 
         is HomeSceneModel.ConnectionStatusState -> {
             submitButtonState.value = when (value.status) {
-                ConnectionStatus.CONNECTED -> SSButtonState.SUCCESS
-                ConnectionStatus.FAULT -> SSButtonState.FAILIURE
-                ConnectionStatus.LOADING -> SSButtonState.LOADING
-                else -> {
-                    browserState.value = false
-                    SSButtonState.IDLE
+                ConnectionStatus.CONNECTED -> {
+                    MainScope().actionWithDelay(4000) { rateDialogState.value = true }
+                    SSButtonState.SUCCESS
                 }
+
+                ConnectionStatus.FAULT -> {
+                    browserState.value = false
+                    SSButtonState.FAILIURE
+                }
+
+                ConnectionStatus.LOADING -> SSButtonState.LOADING
+                else -> SSButtonState.IDLE
             }
         }
 
@@ -215,11 +234,31 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
         else -> Unit
     }
 
-    ConstraintLayout(requireHomeSceneConstraints()) {
+    BackHandler(searchState.value) {
+        searchText.value = ""
+        searchState.value = false
+    }
+
+    if (rateDialogState.value && !viewModel.requireFirstRateAppStatus()) {
+        RateAppDialog(viewModel) { rateDialogState.value = false }
+    }
+
+    ConstraintLayout(
+        requireHomeSceneConstraints(), Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        colorResource(id = R.color.gradient_start),
+                        colorResource(id = R.color.gradient_end),
+                    )
+                )
+            )
+    ) {
         Image(
             modifier = Modifier.layoutId(BACKGROUND_VIEW),
-            contentScale = ContentScale.FillBounds,
-            painter = R.drawable.ic_home_background.requireImage(),
+            contentScale = ContentScale.Fit,
+            painter = R.drawable.ic_earth.requireImage(),
             contentDescription = null
         )
         TopAppBar(
@@ -294,9 +333,7 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
             imageLoader = viewModel.requireImageLoader(),
             imageRequest = viewModel.requireImageRequest(),
             item = selectedVpnModelState?.value
-        ) {
-            selectedConnectionState.value = true
-        }
+        ) { selectedConnectionState.value = true }
 
         EnableVpnButtonItem(modifier = Modifier.layoutId(POWER_BUTTON), submitButtonState = submitButtonState) {
             if (selectedVpnModelState?.value != null) {
@@ -320,13 +357,38 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
         }
 
         if (!loadingState.value) {
-            TumblerWithTextItem(
-                modifier = Modifier.layoutId(TUMBLER_APPS),
-                textId = R.string.text_description_auto_vpn,
-                enabledState = autoVpnEnabledState
-            ) { toggle ->
-                autoVpnEnabledState.value = toggle
-                viewModel saveAutoVpnStatus toggle
+
+            if (!searchState.value) {
+                TumblerWithTextItem(
+                    modifier = Modifier.layoutId(TUMBLER_APPS),
+                    textId = R.string.text_description_auto_vpn,
+                    enabledState = autoVpnEnabledState
+                ) { toggle ->
+                    autoVpnEnabledState.value = toggle
+                    viewModel saveAutoVpnStatus toggle
+                }
+
+                Image(
+                    modifier = Modifier
+                        .layoutId(SEARCH_APPS_DISABLED)
+                        .clickable { searchState.value = true },
+                    painter = R.drawable.ic_search.requireImage(),
+                    contentDescription = null
+                )
+            }
+
+            CrossSlide(
+                modifier = Modifier.layoutId(SEARCH_APPS_ENABLED),
+                targetState = searchState.value
+            ) { screen ->
+                if (screen) {
+                    SearchView(searchText.value, cancelAction = {
+                        searchText.value = ""
+                        searchState.value = false
+                    }) { query ->
+                        searchText.value = query
+                    }
+                }
             }
         }
 
@@ -334,9 +396,9 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
             modifier = Modifier.layoutId(LIST_APPS),
             loadingState = loadingState,
             appList = appList,
-            source = viewModel
+            source = viewModel,
+            query = searchText.value
         )
-
         if (selectedConnectionState.value) {
             navController.navigate(Constants.CONNECTIONS_DESTINATION)
         }

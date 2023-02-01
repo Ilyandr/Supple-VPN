@@ -4,8 +4,6 @@ import android.os.Parcelable
 import gcu.product.base.R
 import kotlinx.parcelize.Parcelize
 
-
-// Development state
 @Parcelize
 sealed class VpnTypeModel: Parcelable {
 

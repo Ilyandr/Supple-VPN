@@ -8,7 +8,6 @@ import gcu.product.supplevpn.repository.source.callback.ConnectionCallback
 internal class ConnectionReceiver(private val source: ConnectionCallback) : BroadcastReceiver() {
 
     override fun onReceive(context: Context?, intent: Intent?) {
-
         intent?.getStringExtra(STATUS_KEY)?.let { currentStatus ->
             source.setConnectionStatus(currentStatus)
         }

@@ -13,15 +13,15 @@ import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.other.HeavyText
 
 @Composable
-internal fun BaseHeaderItem(textId: Int) {
+internal fun BaseHeaderItem(text: String) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .background(color = colorResource(id = R.color.primaryColor))
+            .background(color = colorResource(id = R.color.gradient_end))
     ) {
         HeavyText(
             modifier = Modifier.padding(horizontal = 12.dp, vertical = 6.dp),
-            text = textId,
+            text = text,
             textAlign = TextAlign.Start
         )
     }

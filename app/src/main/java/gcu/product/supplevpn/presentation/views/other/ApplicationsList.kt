@@ -16,24 +16,32 @@ import gcu.product.base.models.apps.ApplicationEntity
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.presentation.views.items.ApplicationItem
 import gcu.product.supplevpn.repository.source.callback.ApplicationsCallback
+
 @Composable
 internal fun ApplicationsList(
     modifier: Modifier,
     loadingState: MutableState<Boolean>,
     appList: MutableState<List<ApplicationEntity?>>,
-    source: ApplicationsCallback
+    source: ApplicationsCallback,
+    query: String? = null
 ) {
     Card(
         modifier = modifier,
         colors = CardDefaults.cardColors(colorResource(id = R.color.grayTransparent)),
-        shape = RoundedCornerShape(16.dp)
+        shape = RoundedCornerShape(topEnd = 16.dp, topStart = 16.dp)
     ) {
         if (!loadingState.value) {
             LazyColumn(
                 modifier = Modifier.padding(vertical = 12.dp),
                 verticalArrangement = Arrangement.spacedBy(12.dp),
             ) {
-                items(appList.value) {
+                var items = appList.value
+                if (!query.isNullOrEmpty()) {
+                    items = items.filter {
+                        it?.name?.contains(query, ignoreCase = true) == true
+                    }.sortedBy { it?.name?.length }
+                }
+                items(items) {
                     ApplicationItem(
                         source.requirePackageManager(),
                         item = it,

@@ -31,7 +31,12 @@
     <!--information-->
     <string name="faq_title_dialog">关于应用程序</string>
 
+    <!--rate dialog-->
+    <string name="title_rate_dialog">给应用评分</string>
+    <string name="description_rate_dialog">我们收到您的反馈非常重要。 你正在帮助这个项目变得更好！</string>
+
     <!--其他-->
+    <string name="search_apps_hint">应用程序名称</string>
     <string name="payment_title_dialog">捐赠给项目</string>
     <string name="payment_amount">RUB</string>
     <string name="dialog_next">下一步</string>

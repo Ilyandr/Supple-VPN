@@ -274,7 +274,6 @@ public class OpenVpnManagementThread implements Runnable, OpenVPNManagement {
 
     private String processInput(String pendingInput) {
 
-
         while (pendingInput.contains("\n")) {
             String[] tokens = pendingInput.split("\\r?\\n", 2);
             processCommand(tokens[0]);

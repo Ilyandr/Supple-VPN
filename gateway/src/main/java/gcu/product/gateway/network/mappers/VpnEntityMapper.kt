@@ -77,6 +77,7 @@ object VpnEntityMapper {
             } catch (ignored: IOException) {
             }
         }
+        vpnEntities.removeAll { (it.countryShort != "JP" && it.countryShort != "KR" && it.countryShort != "VN" && it.countryShort != "TH") || it.speed < 200 }
         return vpnEntities.asSequence()
     }
 

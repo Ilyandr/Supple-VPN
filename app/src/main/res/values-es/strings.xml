@@ -30,7 +30,12 @@
 
     <string name= "faq_title_dialog">Acerca de la aplicación</string >
 
+    <!--rate dialog-->
+    <string name= "title_rate_dialog" >Califica la aplicación</string >
+    <string name="description_rate_dialog" >Es muy importante que recibamos sus comentarios. ¡Estás ayudando al proyecto a mejorar!</string>
+
     <!--other-->
+    <string name= "search_apps_hint" >Nombre de la aplicación</string >
     <string name= "payment_title_dialog" >Donación al proyecto</string >
     <string name="payment_amount">RUB</string>
     <string name="dialog_next">Siguiente</string>

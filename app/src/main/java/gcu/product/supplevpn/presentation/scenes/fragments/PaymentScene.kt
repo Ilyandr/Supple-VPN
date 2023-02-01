@@ -6,6 +6,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -27,9 +28,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -157,11 +160,22 @@ internal fun PaymentScene(navController: NavController, viewModel: PaymentViewMo
         else -> Unit
     }
 
-    Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
+    Box(
+        modifier = Modifier
+            .fillMaxSize()
+            .background(
+                brush = Brush.horizontalGradient(
+                    colors = listOf(
+                        colorResource(id = R.color.gradient_start),
+                        colorResource(id = R.color.gradient_end),
+                    )
+                )
+            ), contentAlignment = Alignment.Center
+    ) {
         Image(
             modifier = Modifier.fillMaxSize(),
-            contentScale = ContentScale.FillBounds,
-            painter = R.drawable.ic_home_background.requireImage(),
+            contentScale = ContentScale.Fit,
+            painter = R.drawable.ic_earth.requireImage(),
             contentDescription = "background"
         )
         if (loadingState.value) {
@@ -232,6 +246,7 @@ internal fun PaymentScene(navController: NavController, viewModel: PaymentViewMo
 
             CustomOutlinedTextField(
                 KeyboardType.Decimal,
+                null,
                 R.string.hint_payments_sum,
                 priceState.value,
                 ImeAction.Done

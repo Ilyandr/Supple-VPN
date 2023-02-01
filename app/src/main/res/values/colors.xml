@@ -6,8 +6,8 @@
     <color name="teal_200">#FF03DAC5</color>
     <color name="teal_700">#FF018786</color>
     <color name="black">#000000</color>
-    <color name="white">#FFFFFFFF</color>
-    <color name="primaryColor">#0277BD</color>
+    <color name="white">#FFFFFF</color>
+    <color name="primaryColor">#35AAFF</color>
     <color name="transparent">#00000000</color>
     <color name="lightGray">#959595</color>
     <color name="grayTransparent">#3D959595</color>
@@ -19,4 +19,7 @@
     <color name="selectedColor">#1E88E5</color>
     <color name="yellow">#FBC02D</color>
     <color name="yellow_low">#F57C00</color>
+    <color name="gradient_start">#1b3666</color>
+    <color name="gradient_end">#1f6394</color>
+    <color name="grayLight">#65FDF4E3</color>
 </resources>

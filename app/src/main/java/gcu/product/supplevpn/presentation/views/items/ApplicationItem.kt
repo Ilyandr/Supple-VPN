@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material.Switch
@@ -17,10 +18,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.asImageBitmap
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.core.graphics.drawable.toBitmap
-import gcu.product.supplevpn.presentation.views.other.DefaultText
 import gcu.product.base.models.apps.ApplicationEntity
+import gcu.product.supplevpn.R
+import gcu.product.supplevpn.presentation.views.other.TextWithShadow
 
 @Composable
 internal inline fun ApplicationItem(
@@ -42,7 +48,14 @@ internal inline fun ApplicationItem(
             contentDescription = null
         )
         Spacer(modifier = Modifier.width(12.dp))
-        DefaultText(text = item.name)
+        TextWithShadow(
+            modifier = Modifier.padding(top = 2.dp),
+            text = item.name,
+            style = TextStyle.Default.copy(
+                fontSize = 19.sp,
+                fontFamily = FontFamily(Font(resId = R.font.sf_regular))
+            )
+        )
         Spacer(modifier = Modifier.width(12.dp))
         Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
             Switch(

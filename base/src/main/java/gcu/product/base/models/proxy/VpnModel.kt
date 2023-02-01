@@ -1,11 +1,13 @@
 package gcu.product.base.models.proxy
 
 import android.os.Parcelable
+import androidx.annotation.Keep
+import gcu.product.base.models.proxy.ConnectionEntity.Companion.MB_QUALITY
 import gcu.product.base.models.proxy.ConnectionEntity.Companion.requireFormatVpnKey
 import kotlinx.parcelize.Parcelize
-import java.util.Locale
 
 @Parcelize
+@Keep
 data class VpnModel(
     val type: VpnTypeModel,
     var hostName: String? = null,
@@ -35,20 +37,12 @@ data class VpnModel(
         countryShort = countryShort,
         ovpnConfigData = ovpnConfigData!!,
         ping = ping,
+        speed = (speed / MB_QUALITY).toInt(),
         protocol = protocol
     )
 
     companion object {
 
         const val FLAGS_API_HOST = "https://flagcdn.com/"
-
-        internal enum class ConnectionStatus {
-            LOADING, CONNECTED, FAULT
-        }
-
-        internal fun String.mapToConnectionStatus() = when (this) {
-            "CONNECTED" -> ConnectionStatus.CONNECTED
-            else -> ConnectionStatus.LOADING
-        }
     }
 }

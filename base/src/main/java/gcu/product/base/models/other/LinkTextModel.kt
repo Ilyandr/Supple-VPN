@@ -1,6 +1,9 @@
 package gcu.product.base.models.other
 
+import androidx.annotation.Keep
 
+
+@Keep
 data class LinkTextModel(
     val text: String,
     val tag: String? = null,
