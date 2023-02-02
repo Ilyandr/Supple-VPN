@@ -27,11 +27,11 @@ internal object Constants {
 
     // Country
     const val RUSSIAN_COUNTRY_CODE = "ru"
-    const val ENGLISH_COUNTRY_CODE = "gb"
-    const val CHINESE_COUNTRY_CODE = "cn"
+    const val ENGLISH_COUNTRY_CODE = "en"
+    const val CHINESE_COUNTRY_CODE = "zh"
     const val SPANISH_COUNTRY_CODE = "es"
     const val RUSSIAN_LANGUAGE_CODE = "ru"
-    const val ENGLISH_LANGUAGE_CODE = "en"
+    const val ENGLISH_LANGUAGE_CODE = "gb"
     const val CHINESE_LANGUAGE_CODE = "cn"
     const val SPANISH_LANGUAGE_CODE = "es"
 

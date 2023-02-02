@@ -23,8 +23,12 @@ internal inline fun RateAppDialog(callback: RateAppCallback, crossinline cancelA
         descriptionTextId = R.string.description_rate_dialog,
         iconId = R.drawable.ic_stars,
         positiveButton = {
-            context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(APP_STORE_LINK)))
-            callback saveFirstRateAppStatus true
+            try {
+                context.startActivity(Intent(Intent.ACTION_VIEW, Uri.parse(APP_STORE_LINK)))
+            } catch (_: Exception) {
+            } finally {
+                callback saveFirstRateAppStatus true
+            }
         },
         negativeButton = {},
         cancelAction = cancelAction

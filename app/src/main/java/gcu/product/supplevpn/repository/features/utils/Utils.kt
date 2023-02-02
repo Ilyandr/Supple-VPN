@@ -46,7 +46,7 @@ import java.util.TreeMap
 
 
 internal object Utils {
-    
+
     @Suppress("DEPRECATION")
     @SuppressLint("PackageManagerGetSignatures")
     infix fun PackageManager.isSystemApp(app: ApplicationInfo) = try {

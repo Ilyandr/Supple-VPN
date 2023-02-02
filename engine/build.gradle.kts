@@ -10,7 +10,7 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        resourceConfigurations.addAll(listOf("ru", "es", "gb", "us", "cn"))
+        resourceConfigurations.addAll(listOf("ru", "es", "en", "zh"))
         minSdk = 21
         targetSdk = 33
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"

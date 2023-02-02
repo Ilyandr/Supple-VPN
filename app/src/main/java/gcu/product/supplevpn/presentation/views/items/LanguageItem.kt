@@ -31,7 +31,7 @@ internal fun LanguageItem(
             DefaultText(
                 fontSize = 19.sp,
                 text = stringResource(id = data.description),
-                textColor = colorResource(if (callback.requireCurrentLanguage() == data.languageCode || callback.requireCurrentLanguage() == data.countryCode) R.color.selectedColor else R.color.blackBlue)
+                textColor = colorResource(if (callback.requireCurrentLanguage() == data.countryCode || callback.requireCurrentLanguage() == data.countryCode) R.color.selectedColor else R.color.blackBlue)
             )
         },
         onClick = {
@@ -40,7 +40,7 @@ internal fun LanguageItem(
         leadingIcon = {
             AsyncImage(
                 imageLoader = requireImageLoader(),
-                model = requireImageRequest().data(ConnectionEntity requireImageHost data.countryCode).build(),
+                model = requireImageRequest().data(ConnectionEntity requireImageHost data.languageCode).build(),
                 fallback = painterResource(id = R.drawable.ic_unknown_counry),
                 placeholder = R.drawable.ic_launcher_foreground.requireImage(),
                 contentDescription = null,

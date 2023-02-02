@@ -9,6 +9,6 @@ enum class ConnectionStatus {
 
 fun String.mapToConnectionStatus() = when (this) {
     "CONNECTED" -> ConnectionStatus.CONNECTED
-    "AUTH_FAILED", "NOPROCESS", "EXITING" -> ConnectionStatus.FAULT
+    "AUTH_FAILED", "NOPROCESS", "EXITING", "STOPPED" -> ConnectionStatus.FAULT
     else -> ConnectionStatus.LOADING
 }

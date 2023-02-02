@@ -13,12 +13,12 @@ android {
     compileSdk = 33
 
     defaultConfig {
-        resourceConfigurations.addAll(listOf("ru", "es", "gb", "us", "cn"))
+        resourceConfigurations.addAll(listOf("ru", "es", "en", "zh"))
         applicationId = "gcu.product.supplevpn"
         minSdk = 21
         targetSdk = 33
-        versionCode = 3
-        versionName = "1.3.3-beta"
+        versionCode = 4
+        versionName = "1.3.4-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

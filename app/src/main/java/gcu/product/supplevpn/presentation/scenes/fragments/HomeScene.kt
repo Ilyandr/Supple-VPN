@@ -39,6 +39,7 @@ import androidx.constraintlayout.compose.ConstraintLayout
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavHostController
 import com.simform.ssjetpackcomposeprogressbuttonlibrary.SSButtonState
+import de.blinkt.openvpn.core.OpenVPNService.lastVpnStatus
 import gcu.product.supplevpn.R
 import gcu.product.supplevpn.domain.models.HomeSceneModel
 import gcu.product.supplevpn.domain.viewModels.ConnectionsSceneViewModel
@@ -170,6 +171,10 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
     }
     with(viewModel.requireReceiverData()) {
         context.registerReceiver(first, second)
+        lastVpnStatus?.run {
+            viewModel.setConnectionStatus(this)
+            lastVpnStatus = null
+        }
     }
     with(context.isStatAccessPermissionSet()) {
         if (autoVpnEnabledState.value && !this) {
@@ -200,19 +205,22 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
         }
 
         is HomeSceneModel.ConnectionStatusState -> {
-            submitButtonState.value = when (value.status) {
-                ConnectionStatus.CONNECTED -> {
-                    MainScope().actionWithDelay(4000) { rateDialogState.value = true }
-                    SSButtonState.SUCCESS
-                }
+            val status = value.status.name
+            if (submitButtonState.value.name != status) {
+                submitButtonState.value = when (value.status) {
+                    ConnectionStatus.CONNECTED -> {
+                        MainScope().actionWithDelay(4000) { rateDialogState.value = true }
+                        SSButtonState.SUCCESS
+                    }
 
-                ConnectionStatus.FAULT -> {
-                    browserState.value = false
-                    SSButtonState.FAILIURE
-                }
+                    ConnectionStatus.FAULT -> {
+                        browserState.value = false
+                        SSButtonState.FAILIURE
+                    }
 
-                ConnectionStatus.LOADING -> SSButtonState.LOADING
-                else -> SSButtonState.IDLE
+                    ConnectionStatus.LOADING -> SSButtonState.LOADING
+                    else -> SSButtonState.IDLE
+                }
             }
         }
 
@@ -399,6 +407,7 @@ internal fun HomeScene(navController: NavHostController, viewModel: HomeSceneVie
             source = viewModel,
             query = searchText.value
         )
+
         if (selectedConnectionState.value) {
             navController.navigate(Constants.CONNECTIONS_DESTINATION)
         }
