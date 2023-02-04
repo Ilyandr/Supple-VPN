@@ -36,9 +36,9 @@ internal object Constants {
     const val SPANISH_LANGUAGE_CODE = "es"
 
     // Payments
-    const val GENERAL_SHOP_ID = "private info"
-    const val GENERAL_SHOP_PASSWORD = "private info"
-    const val CURRENCY_APP_RU = "private info"
-    const val GENERAL_SHOP_API_PASSWORD = "private info"
-    const val GENERAL_CLIENT_API_ID = "private info"
+    const val GENERAL_SHOP_ID = "private key"
+    const val GENERAL_SHOP_PASSWORD = "private key"
+    const val CURRENCY_APP_RU = "private key"
+    const val GENERAL_SHOP_API_PASSWORD = "private key"
+    const val GENERAL_CLIENT_API_ID = "private key"
 }

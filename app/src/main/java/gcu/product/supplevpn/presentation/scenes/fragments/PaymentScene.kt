@@ -34,6 +34,9 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.colorResource
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -48,8 +51,8 @@ import gcu.product.supplevpn.presentation.views.dialogs.LoadingDialog
 import gcu.product.supplevpn.presentation.views.dialogs.SuppleDefaultDialog
 import gcu.product.supplevpn.presentation.views.other.BaseButton
 import gcu.product.supplevpn.presentation.views.other.CustomOutlinedTextField
-import gcu.product.supplevpn.presentation.views.other.DefaultText
 import gcu.product.supplevpn.presentation.views.other.HeavyText
+import gcu.product.supplevpn.presentation.views.other.TextWithShadow
 import gcu.product.supplevpn.repository.features.utils.requireImage
 import ru.yoomoney.sdk.kassa.payments.Checkout
 import ru.yoomoney.sdk.kassa.payments.Checkout.createTokenizeIntent
@@ -235,11 +238,13 @@ internal fun PaymentScene(navController: NavController, viewModel: PaymentViewMo
 
             Spacer(modifier = Modifier.height(16.dp))
 
-            DefaultText(
+            TextWithShadow(
                 modifier = Modifier.padding(16.dp),
                 text = stringResource(id = R.string.description_payments_info),
-                fontSize = 20.sp,
-                singleLine = false
+                style = TextStyle.Default.copy(
+                    fontSize = 20.sp,
+                    fontFamily = FontFamily(Font(resId = R.font.sf_medium))
+                )
             )
 
             Spacer(modifier = Modifier.height(16.dp))

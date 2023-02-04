@@ -17,8 +17,8 @@ android {
         applicationId = "gcu.product.supplevpn"
         minSdk = 21
         targetSdk = 33
-        versionCode = 4
-        versionName = "1.3.4-beta"
+        versionCode = 6
+        versionName = "1.3.6-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -31,6 +31,10 @@ android {
             isShrinkResources = true
         }
     }
+    bundle {
+        language { enableSplit = false }
+        abi { enableSplit = false }
+    }
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_11
         targetCompatibility = JavaVersion.VERSION_11
@@ -41,11 +45,6 @@ android {
             "-P",
             "plugin:androidx.compose.compiler.plugins.kotlin:suppressKotlinVersionCompatibilityCheck=true"
         )
-    }
-    bundle {
-        storeArchive {
-            enable = true
-        }
     }
     buildFeatures {
         compose = true

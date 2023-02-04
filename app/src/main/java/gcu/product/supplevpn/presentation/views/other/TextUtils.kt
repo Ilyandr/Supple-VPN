@@ -92,11 +92,17 @@ fun LinkText(linkTextData: List<LinkTextModel>, modifier: Modifier = Modifier) {
 }
 
 @Composable
-fun TextWithShadow(text: String, style: TextStyle, modifier: Modifier = Modifier) =
+fun TextWithShadow(
+    text: String,
+    style: TextStyle,
+    modifier: Modifier = Modifier,
+    textAlign: TextAlign = TextAlign.Center,
+) =
     Box(modifier = modifier) {
         Text(
             text = text,
             style = style,
+            textAlign = textAlign,
             color = Color.DarkGray,
             modifier = Modifier
                 .offset(x = 2.dp, y = 2.dp)
@@ -104,6 +110,7 @@ fun TextWithShadow(text: String, style: TextStyle, modifier: Modifier = Modifier
         )
         Text(
             text = text,
+            textAlign = textAlign,
             style = style,
             color = Color.White,
         )
