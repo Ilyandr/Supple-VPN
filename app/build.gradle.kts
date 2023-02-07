@@ -17,8 +17,8 @@ android {
         applicationId = "gcu.product.supplevpn"
         minSdk = 21
         targetSdk = 33
-        versionCode = 6
-        versionName = "1.3.6-beta"
+        versionCode = 7
+        versionName = "1.3.7-beta"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {

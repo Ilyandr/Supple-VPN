@@ -65,18 +65,8 @@ internal class AutoVpnService : Service(), ConnectionCallback {
     @SuppressLint("UnspecifiedRegisterReceiverFlag")
     override fun onStartCommand(intent: Intent, flags: Int, startId: Int): Int {
         super.onStartCommand(intent, flags, startId)
-        when (intent.action) {
-            Constants.START_SERVICE -> {
-                isAutoVpnServiceEnabled = true
-                registerReceiver(connectionReceiver, connectionReceiverIntent)
-            }
-
-            Constants.STOP_SERVICE -> {
-                isAutoVpnServiceEnabled = false
-                @Suppress("DEPRECATION") stopForeground(true)
-                stopSelfResult(startId)
-            }
-        }
+        isAutoVpnServiceEnabled = true
+        registerReceiver(connectionReceiver, connectionReceiverIntent)
         return START_STICKY
     }
 
@@ -182,17 +172,16 @@ internal class AutoVpnService : Service(), ConnectionCallback {
         var isAutoVpnServiceEnabled = false
 
         internal infix fun Context.connectAutoVpnService(isEnabled: Boolean) {
-            try {
-                if (isAutoVpnServiceEnabled && isEnabled) return
-                with(Intent(this, AutoVpnService::class.java)) {
-                    action = if (isEnabled) Constants.START_SERVICE else Constants.STOP_SERVICE
+            with(Intent(this, AutoVpnService::class.java)) {
+                if (!isEnabled && isAutoVpnServiceEnabled) {
+                    stopService(this)
+                } else {
                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                         startForegroundService(this)
                     } else {
                         startService(this)
                     }
                 }
-            } catch (_: Exception) {
             }
         }
     }
