@@ -20,8 +20,6 @@ internal object Constants {
     // Other
     const val DEFAULT_REST_TIMEOUT = 180L
     const val APP_STORE_LINK = "market://details?id=gcu.product.supplevpn"
-    const val STOP_SERVICE = "stop_service"
-    const val START_SERVICE = "start_service"
     const val APPLICATION_PATH = "gcu.product.supplevpn"
     const val HOME_PAGE_BROWSER = "https://www.startpage.com/"
 
@@ -36,9 +34,9 @@ internal object Constants {
     const val SPANISH_LANGUAGE_CODE = "es"
 
     // Payments
-    const val GENERAL_SHOP_ID = "887426"
-    const val GENERAL_SHOP_PASSWORD = "live_7iDFcff9c5ytJCa5bakfvugBnx6oMQcS8NcvSW0v6rI"
-    const val CURRENCY_APP_RU = "RUB"
-    const val GENERAL_SHOP_API_PASSWORD = "live_ODg3NDI2sqL105dOCiiUyOulSGgX1sKWX2TogwMhS5w"
-    const val GENERAL_CLIENT_API_ID = "263409697020"
+    const val GENERAL_SHOP_ID = "private key"
+    const val GENERAL_SHOP_PASSWORD = "private key"
+    const val CURRENCY_APP_RU = "private key"
+    const val GENERAL_SHOP_API_PASSWORD = "private key"
+    const val GENERAL_CLIENT_API_ID = "private key"
 }
